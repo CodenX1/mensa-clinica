@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { ChefHat, Users, BookOpen, ClipboardList, AlertTriangle, CheckCircle2, XCircle, Activity, Minus, Plus, Info, Clock, Flame, Thermometer, Lock, ArrowRight, MessageSquare, Inbox, Stethoscope, Upload, FileText, X } from 'lucide-react';
-
+ 
 const PASSWORD_CLINICO = 'clinico2025';
-
+ 
 const INGREDIENTES_INICIALES = [
   { id: 1, nombre: 'Salmón', grupo: 'Proteína animal', iddsiBase: 6, iddsiMin: 4, contraindicaciones: ['alergia_pescado', 'enfermedad_renal'], interacciones: ['warfarina'], objetivos: ['memoria', 'masa_muscular', 'peso'], esProteinaPrincipal: true, modificabilidad: 'base' },
   { id: 2, nombre: 'Calabaza', grupo: 'Vegetal', iddsiBase: 5, iddsiMin: 4, contraindicaciones: [], interacciones: [], objetivos: ['antioxidante'], esProteinaPrincipal: false, modificabilidad: 'base' },
@@ -18,7 +18,7 @@ const INGREDIENTES_INICIALES = [
   { id: 12, nombre: 'Pollo', grupo: 'Proteína animal', iddsiBase: 6, iddsiMin: 4, contraindicaciones: ['enfermedad_renal'], interacciones: [], objetivos: ['masa_muscular', 'peso'], esProteinaPrincipal: true, modificabilidad: 'base' },
   { id: 13, nombre: 'Quinoa', grupo: 'Cereal', iddsiBase: 5, iddsiMin: 4, contraindicaciones: [], interacciones: [], objetivos: ['masa_muscular'], esProteinaPrincipal: true, modificabilidad: 'base' },
 ];
-
+ 
 const RECETAS_INICIALES = [
   {
     id: 1, nombre: 'Puré Salmón + Calabaza + Kale', momentosDia: ['almuerzo', 'cena'],
@@ -129,8 +129,87 @@ const RECETAS_INICIALES = [
     texturaEsperada: 'Cremosa, suave, alta densidad',
     notasCriticas: ['Combinación de alta densidad calórica ideal para subir peso']
   },
+  {
+    id: 6, nombre: 'Puré Avena + Banano + Nuez', momentosDia: ['desayuno'],
+    base: [{ id: 15, cantidadG: 80 }, { id: 7, cantidadG: 150 }],
+    removibles: [],
+    anadibles: [{ id: 5, cantidadG: 3 }],
+    iddsiResultante: 5, iddsiMinimo: 4, validado: true, porcionesBase: 5,
+    tiempoTotal: 20, temperaturaServicio: 'caliente', baseSabor: 'dulce',
+    objetivosClinicos: ['peso', 'memoria'],
+    funcionNutricional: ['densidad_calorica', 'fibra_soluble', 'omega_3'],
+    accionCerebral: ['sintesis_neurotransmisores'],
+    tecnicas: ['coccion_absorcion', 'licuado'],
+    modificacionesAceptadas: ['iddsi_4'],
+    proceso: [
+      { paso: 1, accion: 'Cocinar', ingrediente: 'banano con leche', tiempo: 10, temperatura: 95, nota: 'Hasta espesar' },
+      { paso: 2, accion: 'Licuar', ingrediente: 'mezcla completa', tiempo: 2, temperatura: null, nota: 'Hasta homogéneo' },
+    ],
+    texturaEsperada: 'Cremosa, dulce natural, espesa',
+    notasCriticas: ['Banano aporta triptófano para serotonina matutina']
+  },
+  {
+    id: 7, nombre: 'Desayuno Verde Energético', momentosDia: ['desayuno', 'merienda_manana'],
+    base: [{ id: 10, cantidadG: 50 }, { id: 15, cantidadG: 80 }, { id: 11, cantidadG: 10 }],
+    removibles: [{ id: 14, cantidadG: 20 }],
+    anadibles: [],
+    iddsiResultante: 4, iddsiMinimo: 3, validado: true, porcionesBase: 5,
+    tiempoTotal: 10, temperaturaServicio: 'frio', baseSabor: 'dulce',
+    objetivosClinicos: ['antioxidante', 'memoria', 'peso'],
+    funcionNutricional: ['densidad_calorica', 'omega_3', 'antioxidante'],
+    accionCerebral: ['antioxidante', 'oxigenacion', 'antiinflamatorio_neuronal'],
+    tecnicas: ['licuado', 'hidratacion_frio'],
+    modificacionesAceptadas: ['sin_kale', 'iddsi_3'],
+    proceso: [
+      { paso: 1, accion: 'Hidratar', ingrediente: 'chía en leche vegetal', tiempo: 15, temperatura: 4, nota: 'Mínimo 15 min para activar' },
+      { paso: 2, accion: 'Licuar', ingrediente: 'todos los ingredientes', tiempo: 3, temperatura: null, nota: 'Hasta homogéneo y cremoso' },
+    ],
+    texturaEsperada: 'Cremosa, color verde claro, fluida',
+    notasCriticas: ['Espinacas alto en vitamina K — sustituir si toma warfarina']
+  },
+  {
+    id: 8, nombre: 'Compota de Frutos Rojos + Chía', momentosDia: ['merienda_manana', 'merienda_tarde', 'colacion_nocturna'],
+    base: [{ id: 15, cantidadG: 60 }, { id: 11, cantidadG: 8 }],
+    removibles: [],
+    anadibles: [],
+    iddsiResultante: 4, iddsiMinimo: 3, validado: true, porcionesBase: 5,
+    tiempoTotal: 25, temperaturaServicio: 'ambiente', baseSabor: 'dulce',
+    objetivosClinicos: ['antioxidante', 'memoria'],
+    funcionNutricional: ['antioxidante', 'fibra', 'omega_3'],
+    accionCerebral: ['antioxidante', 'antiinflamatorio_neuronal'],
+    tecnicas: ['coccion_absorcion', 'licuado', 'hidratacion_frio'],
+    modificacionesAceptadas: ['iddsi_3'],
+    proceso: [
+      { paso: 1, accion: 'Hidratar', ingrediente: 'chía en agua', tiempo: 15, temperatura: 4, nota: 'Hasta gel' },
+      { paso: 2, accion: 'Cocinar', ingrediente: 'frutas a fuego lento', tiempo: 8, temperatura: 80, nota: 'Hasta deshacerse' },
+      { paso: 3, accion: 'Incorporar', ingrediente: 'chía hidratada', tiempo: 1, temperatura: null, nota: 'Mezclar uniforme' },
+    ],
+    texturaEsperada: 'Compota suave, ligera consistencia gelatinosa',
+    notasCriticas: ['Chía interactúa con anticoagulantes']
+  },
+  {
+    id: 9, nombre: 'Caldo Restaurador con Pollo', momentosDia: ['colacion_nocturna'],
+    base: [{ id: 12, cantidadG: 40 }, { id: 7, cantidadG: 250 }, { id: 8, cantidadG: 50 }],
+    removibles: [],
+    anadibles: [{ id: 4, cantidadG: 1 }],
+    iddsiResultante: 3, iddsiMinimo: 2, validado: true, porcionesBase: 5,
+    tiempoTotal: 60, temperaturaServicio: 'tibio', baseSabor: 'salado',
+    objetivosClinicos: ['masa_muscular', 'peso'],
+    funcionNutricional: ['proteina_completa', 'colageno'],
+    accionCerebral: ['sintesis_neurotransmisores'],
+    tecnicas: ['coccion_absorcion', 'licuado', 'tamizado'],
+    modificacionesAceptadas: ['sin_sal', 'iddsi_2'],
+    proceso: [
+      { paso: 1, accion: 'Cocinar', ingrediente: 'pollo en caldo', tiempo: 30, temperatura: 90, nota: 'Cocción lenta para concentrar' },
+      { paso: 2, accion: 'Agregar', ingrediente: 'camote', tiempo: 20, temperatura: 90, nota: 'Hasta deshacer' },
+      { paso: 3, accion: 'Licuar', ingrediente: 'todo junto', tiempo: 3, temperatura: null, nota: 'Muy fino' },
+      { paso: 4, accion: 'Tamizar', ingrediente: 'caldo', tiempo: 2, temperatura: null, nota: 'Para IDDSI 2-3' },
+    ],
+    texturaEsperada: 'Líquido espeso, sin fibras, ligero al paladar',
+    notasCriticas: ['Ideal para colación nocturna por digestión fácil']
+  },
 ];
-
+ 
 const PACIENTES_INICIALES = [
   { id: 1, nombre: 'María González', habitacion: '12', edad: 82, iddsi: 5, condiciones: [], medicamentos: [], alergias: [], objetivos: ['memoria'] },
   { id: 2, nombre: 'Juan Pérez', habitacion: '04', edad: 78, iddsi: 5, condiciones: ['hipertension'], medicamentos: ['warfarina'], alergias: [], objetivos: ['memoria', 'peso'] },
@@ -141,15 +220,15 @@ const PACIENTES_INICIALES = [
   { id: 7, nombre: 'Roberto Silva', habitacion: '07', edad: 84, iddsi: 5, condiciones: ['hipertension', 'diabetes'], medicamentos: [], alergias: [], objetivos: ['peso'] },
   { id: 8, nombre: 'Elena Vargas', habitacion: '11', edad: 76, iddsi: 5, condiciones: [], medicamentos: [], alergias: [], objetivos: ['memoria'] },
 ];
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // MOTOR
 // ═══════════════════════════════════════════════════════════════
-
+ 
 function getIngredientesIds(receta, capa) {
   return receta[capa].map(item => typeof item === 'object' ? item.id : item);
 }
-
+ 
 function evaluarRecetaParaPaciente(receta, paciente, ingredientes) {
   if (receta.iddsiMinimo > paciente.iddsi) return { compatible: false, motivo: 'No alcanza IDDSI ' + paciente.iddsi };
   const baseIds = getIngredientesIds(receta, 'base');
@@ -157,7 +236,7 @@ function evaluarRecetaParaPaciente(receta, paciente, ingredientes) {
   const anadiblesIds = getIngredientesIds(receta, 'anadibles');
   const removidos = [];
   const noAnadir = [];
-
+ 
   for (const ingId of baseIds) {
     const ing = ingredientes.find(i => i.id === ingId);
     if (!ing) continue;
@@ -191,7 +270,7 @@ function evaluarRecetaParaPaciente(receta, paciente, ingredientes) {
   const requiereTriturado = receta.iddsiResultante > paciente.iddsi;
   return { compatible: true, variaciones: { remover: removidos, noAnadir: noAnadir, triturarA: requiereTriturado ? paciente.iddsi : null } };
 }
-
+ 
 function evaluarCobertura(recetas, pacientes, ingredientes) {
   const resultados = recetas.map(receta => {
     if (!receta) return null;
@@ -204,11 +283,11 @@ function evaluarCobertura(recetas, pacientes, ingredientes) {
     });
     return { receta, cubiertos, noCubiertos };
   });
-
+ 
   const pacientesCubiertosIds = new Set();
   resultados.forEach(r => { if (r) r.cubiertos.forEach(c => pacientesCubiertosIds.add(c.paciente.id)); });
   const pacientesNoCubiertos = pacientes.filter(p => !pacientesCubiertosIds.has(p.id));
-
+ 
   let estado = 'aprobado';
   if (pacientesNoCubiertos.length > 0) estado = 'no_aprobado';
   else {
@@ -219,7 +298,7 @@ function evaluarCobertura(recetas, pacientes, ingredientes) {
   }
   return { resultados, estado, pacientesNoCubiertos, totalPacientes: pacientes.length, cubiertos: pacientesCubiertosIds.size };
 }
-
+ 
 function asignarPacientesACaminos(evaluacion) {
   // Cada paciente aparece en TODOS los caminos donde es compatible
   // Esto le da visibilidad al chef sobre la flexibilidad de cada paciente
@@ -234,7 +313,7 @@ function asignarPacientesACaminos(evaluacion) {
   
   return asignaciones;
 }
-
+ 
 function obtenerPacientesConUnaOpcion(evaluacion) {
   // Identifica pacientes que solo pueden comer de UN camino
   // Estos son los que generan "observación"
@@ -256,7 +335,7 @@ function obtenerPacientesConUnaOpcion(evaluacion) {
     .filter(([_, count]) => count === 1)
     .map(([id]) => pacienteData[id]);
 }
-
+ 
 const CONDICIONES_LABEL = { hipertension: 'Hipertensión', diabetes: 'Diabetes', enfermedad_renal: 'Enf. renal', alergia_pescado: 'Alergia pescado' };
 const OBJETIVOS_LABEL = { memoria: 'Memoria', peso: 'Subir peso', masa_muscular: 'Masa muscular', antioxidante: 'Antioxidante' };
 const FUNCIONES_LABEL = { proteina_completa: 'Proteína completa', proteina_incompleta: 'Proteína incompleta', antiinflamatorio: 'Antiinflamatorio', antioxidante: 'Antioxidante', densidad_calorica: 'Densidad calórica', fibra_soluble: 'Fibra soluble', fibra: 'Fibra', omega_3: 'Omega-3', aminoacidos_completos: 'Aminoácidos completos' };
@@ -272,14 +351,161 @@ const MOMENTOS_LABEL = {
   colacion_nocturna: 'Colación nocturna',
   postre: 'Postre'
 };
-
+ 
+// Configuración de cantidad de caminos por tiempo de comida
+const CAMINOS_POR_MOMENTO = {
+  desayuno: 3,
+  merienda_manana: 2,
+  almuerzo: 3,
+  merienda_tarde: 2,
+  cena: 3,
+  colacion_nocturna: 2,
+  postre: 2
+};
+ 
+// Orden de los tiempos de comida en el día
+const ORDEN_MOMENTOS = ['desayuno', 'merienda_manana', 'almuerzo', 'merienda_tarde', 'cena', 'colacion_nocturna'];
+ 
+// ═══════════════════════════════════════════════════════════════
+// SISTEMA DE CICLOS
+// ═══════════════════════════════════════════════════════════════
+ 
+const DIAS_SEMANA = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+const DIAS_LABEL = {
+  lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves',
+  viernes: 'Viernes', sabado: 'Sábado', domingo: 'Domingo'
+};
+const DIAS_LABEL_CORTO = {
+  lunes: 'Lun', martes: 'Mar', miercoles: 'Mié', jueves: 'Jue',
+  viernes: 'Vie', sabado: 'Sáb', domingo: 'Dom'
+};
+ 
+const DURACION_CICLO_SEMANAS = 4;
+ 
+function crearDiaVacio() {
+  const dia = { tiempos: {} };
+  ORDEN_MOMENTOS.forEach(momento => {
+    const numCaminos = CAMINOS_POR_MOMENTO[momento] || 3;
+    dia.tiempos[momento] = Array(numCaminos).fill(null);
+  });
+  return dia;
+}
+ 
+function crearSemanaVacia(numero) {
+  const semana = { numero, dias: {} };
+  DIAS_SEMANA.forEach(d => { semana.dias[d] = crearDiaVacio(); });
+  return semana;
+}
+ 
+function crearCicloVacio(nombre = 'Ciclo Inicial 2026') {
+  return {
+    id: 'ciclo_' + Date.now(),
+    nombre,
+    estado: 'activo',
+    fechaCreacion: new Date().toISOString(),
+    fechaInicio: new Date().toISOString().split('T')[0], // hoy
+    duracionSemanas: DURACION_CICLO_SEMANAS,
+    semanas: Array.from({ length: DURACION_CICLO_SEMANAS }, (_, i) => crearSemanaVacia(i + 1)),
+    notas: ''
+  };
+}
+ 
+// Calcula qué día del ciclo es "hoy" basado en la fecha de inicio
+function calcularHoyEnCiclo(ciclo) {
+  if (!ciclo || !ciclo.fechaInicio) return { semana: 1, dia: 'lunes' };
+  
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+  const inicio = new Date(ciclo.fechaInicio + 'T00:00:00');
+  const diffDias = Math.floor((hoy - inicio) / (1000 * 60 * 60 * 24));
+  
+  if (diffDias < 0) return { semana: 1, dia: 'lunes' }; // ciclo no ha empezado
+  
+  const diasTotalCiclo = ciclo.duracionSemanas * 7;
+  // Si el ciclo se terminó, se considera que rota (resetea)
+  const diaEnCiclo = diffDias % diasTotalCiclo;
+  
+  const semana = Math.floor(diaEnCiclo / 7) + 1;
+  const diaSemanaIdx = diaEnCiclo % 7;
+  
+  return { semana, dia: DIAS_SEMANA[diaSemanaIdx] };
+}
+ 
+// Obtiene los caminos asignados a un día/tiempo específico
+function obtenerCaminosDelDia(ciclo, numSemana, diaSemana) {
+  if (!ciclo) return null;
+  const semana = ciclo.semanas.find(s => s.numero === numSemana);
+  if (!semana) return null;
+  return semana.dias[diaSemana] || null;
+}
+ 
+// Actualiza los caminos de un día/tiempo específico
+function actualizarCaminosDelDia(ciclo, numSemana, diaSemana, momento, caminos) {
+  const nuevoCiclo = {
+    ...ciclo,
+    semanas: ciclo.semanas.map(s => {
+      if (s.numero !== numSemana) return s;
+      return {
+        ...s,
+        dias: {
+          ...s.dias,
+          [diaSemana]: {
+            ...s.dias[diaSemana],
+            tiempos: {
+              ...s.dias[diaSemana].tiempos,
+              [momento]: caminos
+            }
+          }
+        }
+      };
+    })
+  };
+  return nuevoCiclo;
+}
+ 
+// Calcula el estado de un día completo (agregando todos los tiempos)
+function calcularEstadoDia(dia, pacientes, ingredientes, recetas) {
+  if (!dia) return 'vacio';
+  
+  const tiempos = Object.values(dia.tiempos);
+  const todoVacio = tiempos.every(caminos => caminos.every(c => c === null));
+  if (todoVacio) return 'vacio';
+  
+  // Por cada tiempo de comida, evalúa la cobertura
+  let hayNoAprobado = false;
+  let hayObservacion = false;
+  let hayVacio = false;
+  
+  for (const [momento, caminos] of Object.entries(dia.tiempos)) {
+    const algunVacio = caminos.some(c => c === null);
+    const todosVacios = caminos.every(c => c === null);
+    
+    if (todosVacios) {
+      hayVacio = true;
+      continue;
+    }
+    if (algunVacio) hayVacio = true;
+    
+    const recetasSel = caminos.map(id => id ? recetas.find(r => r.id === id) : null);
+    const ev = evaluarCobertura(recetasSel, pacientes, ingredientes);
+    
+    if (ev.estado === 'no_aprobado') hayNoAprobado = true;
+    if (ev.estado === 'observacion') hayObservacion = true;
+  }
+  
+  if (hayNoAprobado) return 'no_aprobado';
+  if (hayVacio) return 'parcial';
+  if (hayObservacion) return 'observacion';
+  return 'aprobado';
+}
+ 
 const IDDSI_DESC = { 0: 'Líquido fino', 1: 'Líquido levemente espeso', 2: 'Líquido espeso', 3: 'Líquido muy espeso', 4: 'Puré liso', 5: 'Picado fino húmedo', 6: 'Blando, se desmenuza', 7: 'Sólido normal' };
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // BASE DE CONOCIMIENTO CLÍNICO MOCK
 // Simula respuestas de APIs reales (NIH, Drugs.com, FARE, ODS)
 // ═══════════════════════════════════════════════════════════════
-
+ 
 const CONOCIMIENTO_CONDICIONES = {
   'parkinson': {
     nombre: 'Parkinson',
@@ -367,7 +593,7 @@ const CONOCIMIENTO_CONDICIONES = {
     fuente: 'NIH ODS / NOF Guidelines'
   }
 };
-
+ 
 const CONOCIMIENTO_MEDICAMENTOS = {
   'levodopa': {
     nombre: 'Levodopa',
@@ -430,7 +656,7 @@ const CONOCIMIENTO_MEDICAMENTOS = {
     fuente: 'Drugs.com / ADA Guidelines'
   }
 };
-
+ 
 const CONOCIMIENTO_ALERGIAS = {
   'mariscos': {
     nombre: 'Mariscos',
@@ -457,7 +683,7 @@ const CONOCIMIENTO_ALERGIAS = {
     fuente: 'FARE'
   }
 };
-
+ 
 const CONOCIMIENTO_OBJETIVOS = {
   'sarcopenia': {
     nombre: 'Sarcopenia (pérdida muscular)',
@@ -496,11 +722,11 @@ const CONOCIMIENTO_OBJETIVOS = {
     fuente: 'NIH / Dieta antiinflamatoria mediterránea'
   }
 };
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // PARSER CSV
 // ═══════════════════════════════════════════════════════════════
-
+ 
 function parsearCSV(texto) {
   const lineas = texto.trim().split(/\r?\n/);
   if (lineas.length < 2) return { headers: [], rows: [] };
@@ -523,7 +749,7 @@ function parsearCSV(texto) {
     result.push(actual.trim());
     return result;
   };
-
+ 
   const headers = parseLinea(lineas[0]);
   const rows = lineas.slice(1).map(linea => {
     const valores = parseLinea(linea);
@@ -533,12 +759,12 @@ function parsearCSV(texto) {
   });
   return { headers, rows };
 }
-
+ 
 function parsearLista(valor) {
   if (!valor) return [];
   return valor.split('|').map(s => s.trim()).filter(Boolean);
 }
-
+ 
 function parsearIngredientes(valor) {
   if (!valor) return [];
   return valor.split('|').map(item => {
@@ -546,7 +772,7 @@ function parsearIngredientes(valor) {
     return { nombre, cantidadG: parseInt(gramos) || 0 };
   }).filter(i => i.nombre);
 }
-
+ 
 function parsearProceso(valor) {
   if (!valor) return [];
   return valor.split('::').map((paso, idx) => {
@@ -561,14 +787,14 @@ function parsearProceso(valor) {
     };
   });
 }
-
+ 
 function transformarFilaReceta(row, ingredientesCatalogo) {
   // Mapear ingredientes por nombre a IDs
   const buscarIdPorNombre = (nombre) => {
     const ing = ingredientesCatalogo.find(i => i.nombre.toLowerCase() === nombre.toLowerCase());
     return ing ? ing.id : null;
   };
-
+ 
   const mapearIngredientes = (lista) => {
     return lista.map(i => ({
       id: buscarIdPorNombre(i.nombre),
@@ -576,17 +802,17 @@ function transformarFilaReceta(row, ingredientesCatalogo) {
       nombreOriginal: i.nombre
     }));
   };
-
+ 
   const baseRaw = mapearIngredientes(parsearIngredientes(row.ingredientes_base));
   const removiblesRaw = mapearIngredientes(parsearIngredientes(row.ingredientes_removibles));
   const anadiblesRaw = mapearIngredientes(parsearIngredientes(row.ingredientes_anadibles));
-
+ 
   const ingredientesNoEncontrados = [
     ...baseRaw.filter(i => !i.id).map(i => i.nombreOriginal),
     ...removiblesRaw.filter(i => !i.id).map(i => i.nombreOriginal),
     ...anadiblesRaw.filter(i => !i.id).map(i => i.nombreOriginal),
   ];
-
+ 
   return {
     nombre: row.nombre,
     momentosDia: parsearLista(row.momentos_dia),
@@ -611,7 +837,7 @@ function transformarFilaReceta(row, ingredientesCatalogo) {
     _advertencias: ingredientesNoEncontrados.length > 0 ? [`Ingredientes no encontrados en catálogo: ${ingredientesNoEncontrados.join(', ')}`] : []
   };
 }
-
+ 
 function transformarFilaPaciente(row) {
   return {
     nombre: row.nombre,
@@ -628,7 +854,7 @@ function transformarFilaPaciente(row) {
     _advertencias: []
   };
 }
-
+ 
 function transformarFilaIngrediente(row) {
   return {
     nombre: row.nombre,
@@ -649,28 +875,28 @@ function transformarFilaIngrediente(row) {
     _advertencias: []
   };
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // MODAL DE IMPORTACIÓN CSV
 // ═══════════════════════════════════════════════════════════════
-
+ 
 function ModalImportarCSV({ tipo, ingredientesCatalogo, onSave, onCancel }) {
   const [paso, setPaso] = useState('upload'); // upload → preview → confirmacion
   const [registros, setRegistros] = useState([]);
   const [error, setError] = useState('');
-
+ 
   const titulos = {
     receta: 'Importar recetas desde CSV',
     paciente: 'Importar pacientes desde CSV',
     ingrediente: 'Importar ingredientes desde CSV'
   };
-
+ 
   const columnasRequeridas = {
     receta: ['nombre', 'momentos_dia', 'base_sabor', 'temperatura_servicio', 'tiempo_total_min', 'iddsi_base', 'iddsi_minimo', 'porciones_base', 'ingredientes_base', 'objetivos_clinicos', 'tecnicas', 'proceso', 'textura_esperada'],
     paciente: ['nombre', 'habitacion', 'edad', 'nivel_iddsi'],
     ingrediente: ['nombre', 'grupo_alimenticio', 'iddsi_base', 'iddsi_minimo', 'es_proteina_principal', 'modificabilidad']
   };
-
+ 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -687,21 +913,21 @@ function ModalImportarCSV({ tipo, ingredientesCatalogo, onSave, onCancel }) {
           setError(`Faltan columnas requeridas: ${faltantes.join(', ')}`);
           return;
         }
-
+ 
         // Transformar filas según tipo
         const transformer = {
           receta: (r) => transformarFilaReceta(r, ingredientesCatalogo),
           paciente: transformarFilaPaciente,
           ingrediente: transformarFilaIngrediente
         }[tipo];
-
+ 
         const transformados = rows.filter(r => r.nombre).map(transformer);
         
         if (transformados.length === 0) {
           setError('No se encontraron registros válidos en el archivo');
           return;
         }
-
+ 
         setRegistros(transformados);
         setError('');
         setPaso('preview');
@@ -711,24 +937,24 @@ function ModalImportarCSV({ tipo, ingredientesCatalogo, onSave, onCancel }) {
     };
     reader.readAsText(file);
   };
-
+ 
   const actualizarRegistro = (idx, campo, valor) => {
     const nuevos = [...registros];
     nuevos[idx] = { ...nuevos[idx], [campo]: valor };
     setRegistros(nuevos);
   };
-
+ 
   const eliminarRegistro = (idx) => {
     setRegistros(registros.filter((_, i) => i !== idx));
   };
-
+ 
   const confirmar = () => {
     registros.forEach(r => {
       const { _advertencias, ...resto } = r;
       onSave(resto);
     });
   };
-
+ 
   return (
     <div className="fixed inset-0 bg-stone-900/40 z-50 flex items-center justify-center p-6" onClick={onCancel}>
       <div className="bg-white max-w-5xl w-full flex flex-col" style={{ maxHeight: '92vh' }} onClick={e => e.stopPropagation()}>
@@ -741,7 +967,7 @@ function ModalImportarCSV({ tipo, ingredientesCatalogo, onSave, onCancel }) {
             <X className="w-5 h-5" />
           </button>
         </div>
-
+ 
         <div className="flex-1 overflow-y-auto" style={{ minHeight: 0 }}>
           
           {paso === 'upload' && (
@@ -757,14 +983,14 @@ function ModalImportarCSV({ tipo, ingredientesCatalogo, onSave, onCancel }) {
                   </span>
                 </label>
               </div>
-
+ 
               {error && (
                 <div className="mt-4 bg-red-50 border-l-2 border-red-700 p-4">
                   <p className="text-xs uppercase tracking-wider text-red-900 font-medium mb-1">Error de validación</p>
                   <p className="text-sm text-red-800">{error}</p>
                 </div>
               )}
-
+ 
               <div className="mt-8 bg-stone-50 border border-stone-200 p-5">
                 <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 mb-3">Columnas requeridas</p>
                 <div className="flex flex-wrap gap-1.5">
@@ -776,14 +1002,14 @@ function ModalImportarCSV({ tipo, ingredientesCatalogo, onSave, onCancel }) {
               </div>
             </div>
           )}
-
+ 
           {paso === 'preview' && (
             <div className="p-8">
               <div className="bg-emerald-50 border-l-2 border-emerald-700 p-4 mb-6">
                 <p className="text-xs uppercase tracking-wider text-emerald-900 font-medium mb-1">Archivo procesado</p>
                 <p className="text-sm text-emerald-800">{registros.length} registro(s) listo(s) para revisar e integrar</p>
               </div>
-
+ 
               <div className="space-y-4">
                 {registros.map((reg, idx) => (
                   <PreviewRegistro 
@@ -798,7 +1024,7 @@ function ModalImportarCSV({ tipo, ingredientesCatalogo, onSave, onCancel }) {
             </div>
           )}
         </div>
-
+ 
         <div className="p-4 border-t border-stone-200 flex-shrink-0 flex gap-2">
           {paso === 'upload' && (
             <button onClick={onCancel} className="w-full py-3 border border-stone-300 text-xs uppercase tracking-wider text-stone-700 hover:bg-stone-50">Cancelar</button>
@@ -816,10 +1042,10 @@ function ModalImportarCSV({ tipo, ingredientesCatalogo, onSave, onCancel }) {
     </div>
   );
 }
-
+ 
 function PreviewRegistro({ registro, tipo, onActualizar, onEliminar }) {
   const [expandido, setExpandido] = useState(false);
-
+ 
   return (
     <div className="border border-stone-200">
       <div className="p-4 bg-stone-50 flex items-center justify-between">
@@ -848,7 +1074,7 @@ function PreviewRegistro({ registro, tipo, onActualizar, onEliminar }) {
           <button onClick={onEliminar} className="text-xs text-red-700 hover:underline">Eliminar</button>
         </div>
       </div>
-
+ 
       {registro._advertencias && registro._advertencias.length > 0 && (
         <div className="bg-amber-50 border-l-2 border-amber-600 p-3">
           {registro._advertencias.map((adv, i) => (
@@ -858,7 +1084,7 @@ function PreviewRegistro({ registro, tipo, onActualizar, onEliminar }) {
           ))}
         </div>
       )}
-
+ 
       {expandido && (
         <div className="p-4 bg-white space-y-3 border-t border-stone-200">
           <CampoEditable label="Nombre" valor={registro.nombre} onChange={v => onActualizar('nombre', v)} />
@@ -887,7 +1113,7 @@ function PreviewRegistro({ registro, tipo, onActualizar, onEliminar }) {
               </div>
             </>
           )}
-
+ 
           {tipo === 'paciente' && (
             <>
               <CampoEditable label="Habitación" valor={registro.habitacion} onChange={v => onActualizar('habitacion', v)} />
@@ -907,7 +1133,7 @@ function PreviewRegistro({ registro, tipo, onActualizar, onEliminar }) {
               </div>
             </>
           )}
-
+ 
           {tipo === 'ingrediente' && (
             <>
               <CampoEditable label="Grupo alimenticio" valor={registro.grupo} onChange={v => onActualizar('grupo', v)} />
@@ -928,7 +1154,7 @@ function PreviewRegistro({ registro, tipo, onActualizar, onEliminar }) {
     </div>
   );
 }
-
+ 
 function CampoEditable({ label, valor, onChange, type = 'text' }) {
   return (
     <div>
@@ -942,11 +1168,11 @@ function CampoEditable({ label, valor, onChange, type = 'text' }) {
     </div>
   );
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // APP PRINCIPAL
 // ═══════════════════════════════════════════════════════════════
-
+ 
 export default function App() {
   const [modo, setModo] = useState(null); // null | 'cocina' | 'clinico'
   const [sesionClinicaValidada, setSesionClinicaValidada] = useState(false);
@@ -956,16 +1182,33 @@ export default function App() {
   const [ingredientes, setIngredientes] = useState(INGREDIENTES_INICIALES);
   const [recetas, setRecetas] = useState(RECETAS_INICIALES);
   const [pacientes, setPacientes] = useState(PACIENTES_INICIALES);
-  const [caminosSeleccionados, setCaminosSeleccionados] = useState([null, null, null]);
-
+  const [ciclo, setCiclo] = useState(() => crearCicloVacio());
+  
+  // Navegación dentro del ciclo: null = vista macro, objeto = editando un día
+  const [diaEditando, setDiaEditando] = useState(null); // { semana: 1, dia: 'lunes' }
+  const [momentoActivo, setMomentoActivo] = useState('almuerzo');
+ 
+  // Caminos del momento/día actualmente en edición
+  const caminosSeleccionados = useMemo(() => {
+    if (!diaEditando) return [null, null, null];
+    const dia = obtenerCaminosDelDia(ciclo, diaEditando.semana, diaEditando.dia);
+    if (!dia) return [null, null, null];
+    return dia.tiempos[momentoActivo] || [null, null, null];
+  }, [ciclo, diaEditando, momentoActivo]);
+ 
+  const setCaminosSeleccionados = (nuevos) => {
+    if (!diaEditando) return;
+    setCiclo(prev => actualizarCaminosDelDia(prev, diaEditando.semana, diaEditando.dia, momentoActivo, nuevos));
+  };
+ 
   const evaluacion = useMemo(() => {
     const recetasSel = caminosSeleccionados.map(id => id ? recetas.find(r => r.id === id) : null);
     if (recetasSel.every(r => r === null)) return null;
     return evaluarCobertura(recetasSel, pacientes, ingredientes);
   }, [caminosSeleccionados, recetas, pacientes, ingredientes]);
-
+ 
   const asignaciones = useMemo(() => evaluacion ? asignarPacientesACaminos(evaluacion) : null, [evaluacion]);
-
+ 
   const ingresarCocina = () => { setModo('cocina'); };
   const ingresarClinico = (password) => {
     if (password === PASSWORD_CLINICO) {
@@ -976,7 +1219,7 @@ export default function App() {
     }
     return false;
   };
-
+ 
   const intentarCambiarAClinico = () => {
     if (sesionClinicaValidada) {
       setModo('clinico');
@@ -984,18 +1227,18 @@ export default function App() {
       setMostrarPassword(true);
     }
   };
-
+ 
   const cambiarACocina = () => { setModo('cocina'); };
-
+ 
   const cerrarSesion = () => {
     setModo(null);
     setSesionClinicaValidada(false);
   };
-
+ 
   if (modo === null) {
     return <PantallaLogin onCocina={ingresarCocina} onClinico={ingresarClinico} />;
   }
-
+ 
   return (
     <div className="min-h-screen bg-stone-50" style={{ fontFamily: "'Inter Tight', system-ui, sans-serif" }}>
       <style>{`
@@ -1003,34 +1246,50 @@ export default function App() {
         .font-display { font-family: 'Fraunces', Georgia, serif; font-feature-settings: 'ss01' on; }
         .grain { background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.015) 1px, transparent 0); background-size: 24px 24px; }
       `}</style>
-
+ 
       <Header modo={modo} onCambiarModo={modo === 'cocina' ? intentarCambiarAClinico : cambiarACocina} onCerrarSesion={cerrarSesion} sesionClinicaValidada={sesionClinicaValidada} />
-
+ 
       <main className="max-w-7xl mx-auto px-6 py-8 grain">
         {modo === 'cocina' && (
-          <AppCocina recetas={recetas} pacientes={pacientes} ingredientes={ingredientes} vista={vista} setVista={setVista} caminosSeleccionados={caminosSeleccionados} setCaminosSeleccionados={setCaminosSeleccionados} evaluacion={evaluacion} asignaciones={asignaciones} />
+          <AppCocina 
+            recetas={recetas} 
+            pacientes={pacientes} 
+            ingredientes={ingredientes} 
+            vista={vista} 
+            setVista={setVista} 
+            caminosSeleccionados={caminosSeleccionados} 
+            setCaminosSeleccionados={setCaminosSeleccionados} 
+            evaluacion={evaluacion} 
+            asignaciones={asignaciones} 
+            momentoActivo={momentoActivo} 
+            setMomentoActivo={setMomentoActivo} 
+            ciclo={ciclo}
+            setCiclo={setCiclo}
+            diaEditando={diaEditando}
+            setDiaEditando={setDiaEditando}
+          />
         )}
         {modo === 'clinico' && (
           <AppClinico recetas={recetas} setRecetas={setRecetas} pacientes={pacientes} setPacientes={setPacientes} ingredientes={ingredientes} setIngredientes={setIngredientes} vista={vistaClinica} setVista={setVistaClinica} />
         )}
       </main>
-
+ 
       {mostrarPassword && (
         <ModalPassword onSubmit={ingresarClinico} onCancel={() => setMostrarPassword(false)} />
       )}
     </div>
   );
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // PANTALLA DE LOGIN
 // ═══════════════════════════════════════════════════════════════
-
+ 
 function PantallaLogin({ onCocina, onClinico }) {
   const [modoSeleccionado, setModoSeleccionado] = useState('cocina');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
-
+ 
   const handleSubmit = () => {
     if (modoSeleccionado === 'cocina') {
       onCocina();
@@ -1039,7 +1298,7 @@ function PantallaLogin({ onCocina, onClinico }) {
       if (!ok) setError(true);
     }
   };
-
+ 
   return (
     <div className="min-h-screen bg-stone-50 flex items-center justify-center px-6" style={{ fontFamily: "'Inter Tight', system-ui, sans-serif" }}>
       <style>{`
@@ -1055,7 +1314,7 @@ function PantallaLogin({ onCocina, onClinico }) {
           <h1 className="font-display text-4xl font-medium text-stone-900 mb-2">Mensa Clínica</h1>
           <p className="text-xs uppercase tracking-[0.2em] text-stone-500">Sistema de Formulación Nutricional</p>
         </div>
-
+ 
         <div className="bg-white border border-stone-200 p-8">
           <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 mb-4">¿Desde dónde trabajas hoy?</p>
           
@@ -1073,7 +1332,7 @@ function PantallaLogin({ onCocina, onClinico }) {
               <Stethoscope className="w-3.5 h-3.5" />Clínico
             </button>
           </div>
-
+ 
           {modoSeleccionado === 'cocina' && (
             <div className="space-y-4">
               <p className="text-sm text-stone-600 leading-relaxed">
@@ -1084,7 +1343,7 @@ function PantallaLogin({ onCocina, onClinico }) {
               </button>
             </div>
           )}
-
+ 
           {modoSeleccionado === 'clinico' && (
             <div className="space-y-4">
               <p className="text-sm text-stone-600 leading-relaxed">
@@ -1116,20 +1375,20 @@ function PantallaLogin({ onCocina, onClinico }) {
     </div>
   );
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // MODAL DE CONTRASEÑA (transición cocina → clínico)
 // ═══════════════════════════════════════════════════════════════
-
+ 
 function ModalPassword({ onSubmit, onCancel }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
-
+ 
   const handleSubmit = () => {
     const ok = onSubmit(password);
     if (!ok) setError(true);
   };
-
+ 
   return (
     <div className="fixed inset-0 bg-stone-900/40 z-50 flex items-center justify-center p-6" onClick={onCancel}>
       <div className="bg-white max-w-md w-full p-8" onClick={e => e.stopPropagation()}>
@@ -1162,16 +1421,16 @@ function ModalPassword({ onSubmit, onCancel }) {
     </div>
   );
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // HEADER
 // ═══════════════════════════════════════════════════════════════
-
+ 
 function Header({ modo, onCambiarModo, onCerrarSesion, sesionClinicaValidada }) {
   const otroModo = modo === 'cocina' ? 'Clínico' : 'Cocina';
   const OtroIcon = modo === 'cocina' ? Stethoscope : ChefHat;
   const requierePassword = modo === 'cocina' && !sesionClinicaValidada;
-
+ 
   return (
     <header className="border-b border-stone-200 bg-white">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -1201,17 +1460,17 @@ function Header({ modo, onCambiarModo, onCerrarSesion, sesionClinicaValidada }) 
     </header>
   );
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // APP COCINA
 // ═══════════════════════════════════════════════════════════════
-
-function AppCocina({ recetas, pacientes, ingredientes, vista, setVista, caminosSeleccionados, setCaminosSeleccionados, evaluacion, asignaciones }) {
+ 
+function AppCocina({ recetas, pacientes, ingredientes, vista, setVista, caminosSeleccionados, setCaminosSeleccionados, evaluacion, asignaciones, momentoActivo, setMomentoActivo, ciclo, setCiclo, diaEditando, setDiaEditando }) {
   return (
     <>
       <div className="mb-8 flex items-center gap-1 bg-stone-100 p-1 rounded-sm w-fit">
         <button onClick={() => setVista('chef')} className={`px-4 py-1.5 text-xs uppercase tracking-wider font-medium transition ${vista === 'chef' ? 'bg-stone-900 text-stone-50' : 'text-stone-600 hover:text-stone-900'}`}>
-          <ChefHat className="w-3.5 h-3.5 inline mr-1.5" />Diseño del día
+          <ChefHat className="w-3.5 h-3.5 inline mr-1.5" />Ciclo del menú
         </button>
         <button onClick={() => setVista('catalogo')} className={`px-4 py-1.5 text-xs uppercase tracking-wider font-medium transition ${vista === 'catalogo' ? 'bg-stone-900 text-stone-50' : 'text-stone-600 hover:text-stone-900'}`}>
           <BookOpen className="w-3.5 h-3.5 inline mr-1.5" />Catálogo
@@ -1220,18 +1479,227 @@ function AppCocina({ recetas, pacientes, ingredientes, vista, setVista, caminosS
           <Users className="w-3.5 h-3.5 inline mr-1.5" />Pacientes
         </button>
       </div>
-
-      {vista === 'chef' && <VistaChef recetas={recetas} pacientes={pacientes} ingredientes={ingredientes} caminosSeleccionados={caminosSeleccionados} setCaminosSeleccionados={setCaminosSeleccionados} evaluacion={evaluacion} asignaciones={asignaciones} />}
+ 
+      {vista === 'chef' && !diaEditando && (
+        <VistaCicloMacro 
+          ciclo={ciclo}
+          setCiclo={setCiclo}
+          pacientes={pacientes}
+          ingredientes={ingredientes}
+          recetas={recetas}
+          onEditarDia={(semana, dia) => setDiaEditando({ semana, dia })}
+        />
+      )}
+      {vista === 'chef' && diaEditando && (
+        <VistaEditorDia
+          ciclo={ciclo}
+          diaEditando={diaEditando}
+          onVolver={() => setDiaEditando(null)}
+          recetas={recetas} 
+          pacientes={pacientes} 
+          ingredientes={ingredientes} 
+          caminosSeleccionados={caminosSeleccionados} 
+          setCaminosSeleccionados={setCaminosSeleccionados} 
+          evaluacion={evaluacion} 
+          asignaciones={asignaciones} 
+          momentoActivo={momentoActivo} 
+          setMomentoActivo={setMomentoActivo}
+        />
+      )}
       {vista === 'catalogo' && <VistaCatalogo recetas={recetas} ingredientes={ingredientes} pacientes={pacientes} soloLectura={true} />}
       {vista === 'pacientes' && <VistaPacientes pacientes={pacientes} soloLectura={true} />}
     </>
   );
 }
-
+ 
+// ═══════════════════════════════════════════════════════════════
+// VISTA MACRO DEL CICLO
+// ═══════════════════════════════════════════════════════════════
+ 
+function VistaCicloMacro({ ciclo, setCiclo, pacientes, ingredientes, recetas, onEditarDia }) {
+  const hoyEnCiclo = useMemo(() => calcularHoyEnCiclo(ciclo), [ciclo]);
+  
+  // Calcular estados de cada día
+  const estadosDias = useMemo(() => {
+    const estados = {};
+    ciclo.semanas.forEach(semana => {
+      DIAS_SEMANA.forEach(dia => {
+        const diaData = semana.dias[dia];
+        estados[`${semana.numero}-${dia}`] = calcularEstadoDia(diaData, pacientes, ingredientes, recetas);
+      });
+    });
+    return estados;
+  }, [ciclo, pacientes, ingredientes, recetas]);
+ 
+  // Estadísticas globales
+  const stats = useMemo(() => {
+    let aprobados = 0, observacion = 0, noAprobados = 0, parciales = 0, vacios = 0;
+    Object.values(estadosDias).forEach(estado => {
+      if (estado === 'aprobado') aprobados++;
+      else if (estado === 'observacion') observacion++;
+      else if (estado === 'no_aprobado') noAprobados++;
+      else if (estado === 'parcial') parciales++;
+      else vacios++;
+    });
+    return { aprobados, observacion, noAprobados, parciales, vacios, total: 28 };
+  }, [estadosDias]);
+ 
+  const irAHoy = () => {
+    onEditarDia(hoyEnCiclo.semana, hoyEnCiclo.dia);
+  };
+ 
+  return (
+    <div className="space-y-6">
+      <div className="border-b border-stone-200 pb-6">
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 mb-2">Planificación nutricional</p>
+            <div className="flex items-center gap-3">
+              <h2 className="font-display text-4xl font-medium text-stone-900 leading-none">{ciclo.nombre}</h2>
+              <span className="text-[10px] uppercase tracking-wider px-2 py-1 bg-emerald-100 text-emerald-800">Activo</span>
+            </div>
+            <p className="text-sm text-stone-600 mt-2">{ciclo.duracionSemanas} semanas · {ciclo.duracionSemanas * 7} días · {stats.aprobados + stats.observacion}/{stats.total} días planificados</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <button onClick={irAHoy} className="px-4 py-2 bg-stone-900 text-stone-50 text-xs uppercase tracking-wider hover:bg-stone-800 flex items-center gap-2">
+              <Clock className="w-3.5 h-3.5" />Ir a hoy
+            </button>
+          </div>
+        </div>
+ 
+        {/* Leyenda */}
+        <div className="mt-6 flex items-center gap-6 text-xs text-stone-600">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
+            <span>Aprobado ({stats.aprobados})</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+            <span>Observación ({stats.observacion})</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-600" />
+            <span>No aprobado ({stats.noAprobados})</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-stone-400" />
+            <span>Parcial ({stats.parciales})</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-stone-200" />
+            <span>Vacío ({stats.vacios})</span>
+          </div>
+        </div>
+      </div>
+ 
+      {/* Tabla macro 4x7 */}
+      <div className="bg-white border border-stone-200">
+        {/* Header con días */}
+        <div className="grid grid-cols-[80px_repeat(7,1fr)] border-b border-stone-200">
+          <div className="p-3 text-[10px] uppercase tracking-wider text-stone-500 font-medium" />
+          {DIAS_SEMANA.map(dia => (
+            <div key={dia} className="p-3 text-center text-[10px] uppercase tracking-wider text-stone-500 font-medium border-l border-stone-100">
+              {DIAS_LABEL_CORTO[dia]}
+            </div>
+          ))}
+        </div>
+ 
+        {/* Filas: una por semana */}
+        {ciclo.semanas.map(semana => (
+          <div key={semana.numero} className="grid grid-cols-[80px_repeat(7,1fr)] border-b border-stone-100 last:border-b-0">
+            <div className="p-4 flex items-center text-xs uppercase tracking-wider text-stone-600 font-medium border-r border-stone-100">
+              S{semana.numero}
+            </div>
+            {DIAS_SEMANA.map(dia => {
+              const estado = estadosDias[`${semana.numero}-${dia}`];
+              const esHoy = hoyEnCiclo.semana === semana.numero && hoyEnCiclo.dia === dia;
+              return (
+                <CeldaDia
+                  key={dia}
+                  ciclo={ciclo}
+                  semana={semana.numero}
+                  dia={dia}
+                  estado={estado}
+                  esHoy={esHoy}
+                  recetas={recetas}
+                  onEditar={() => onEditarDia(semana.numero, dia)}
+                />
+              );
+            })}
+          </div>
+        ))}
+      </div>
+ 
+      <p className="text-xs text-stone-500 italic">Click en cualquier día para editar sus caminos. El día actual está resaltado con un anillo.</p>
+    </div>
+  );
+}
+ 
+function CeldaDia({ ciclo, semana, dia, estado, esHoy, recetas, onEditar }) {
+  const colorEstado = {
+    aprobado: 'bg-emerald-500',
+    observacion: 'bg-amber-500',
+    no_aprobado: 'bg-red-600',
+    parcial: 'bg-stone-400',
+    vacio: 'bg-stone-200'
+  }[estado];
+ 
+  const diaData = ciclo.semanas.find(s => s.numero === semana)?.dias[dia];
+  
+  // Contar recetas asignadas en este día
+  const totalRecetas = diaData ? 
+    Object.values(diaData.tiempos).reduce((acc, caminos) => acc + caminos.filter(c => c !== null).length, 0) 
+    : 0;
+ 
+  return (
+    <button
+      onClick={onEditar}
+      className={`relative p-3 min-h-[80px] border-l border-stone-100 hover:bg-stone-50 transition text-left ${
+        esHoy ? 'ring-2 ring-stone-900 ring-inset' : ''
+      }`}
+    >
+      <div className="flex items-center justify-between mb-2">
+        <span className={`w-2.5 h-2.5 rounded-full ${colorEstado}`} />
+        {esHoy && <span className="text-[9px] uppercase tracking-wider text-stone-900 font-medium">Hoy</span>}
+      </div>
+      {totalRecetas > 0 ? (
+        <div className="text-xs text-stone-700">
+          <p className="font-medium">{totalRecetas} {totalRecetas === 1 ? 'receta' : 'recetas'}</p>
+        </div>
+      ) : (
+        <p className="text-xs text-stone-400">Sin asignar</p>
+      )}
+    </button>
+  );
+}
+ 
+// ═══════════════════════════════════════════════════════════════
+// VISTA EDITOR DE DÍA (refactorizado de VistaChef)
+// ═══════════════════════════════════════════════════════════════
+ 
+function VistaEditorDia({ ciclo, diaEditando, onVolver, recetas, pacientes, ingredientes, caminosSeleccionados, setCaminosSeleccionados, evaluacion, asignaciones, momentoActivo, setMomentoActivo }) {
+  return (
+    <VistaChef
+      recetas={recetas}
+      pacientes={pacientes}
+      ingredientes={ingredientes}
+      caminosSeleccionados={caminosSeleccionados}
+      setCaminosSeleccionados={setCaminosSeleccionados}
+      evaluacion={evaluacion}
+      asignaciones={asignaciones}
+      momentoActivo={momentoActivo}
+      setMomentoActivo={setMomentoActivo}
+      ciclo={ciclo}
+      diaEditando={diaEditando}
+      onVolver={onVolver}
+    />
+  );
+}
+ 
 // ═══════════════════════════════════════════════════════════════
 // APP CLÍNICO
 // ═══════════════════════════════════════════════════════════════
-
+ 
 function AppClinico({ recetas, setRecetas, pacientes, setPacientes, ingredientes, setIngredientes, vista, setVista }) {
   return (
     <>
@@ -1252,7 +1720,7 @@ function AppClinico({ recetas, setRecetas, pacientes, setPacientes, ingredientes
           <Inbox className="w-3.5 h-3.5 inline mr-1.5" />Inbox
         </button>
       </div>
-
+ 
       {vista === 'inicio' && <DashboardClinico recetas={recetas} pacientes={pacientes} ingredientes={ingredientes} setVista={setVista} />}
       {vista === 'recetas' && <VistaCatalogo recetas={recetas} setRecetas={setRecetas} ingredientes={ingredientes} pacientes={pacientes} soloLectura={false} editable={true} />}
       {vista === 'ingredientes' && <VistaIngredientes ingredientes={ingredientes} setIngredientes={setIngredientes} editable={true} />}
@@ -1261,15 +1729,15 @@ function AppClinico({ recetas, setRecetas, pacientes, setPacientes, ingredientes
     </>
   );
 }
-
+ 
 function DashboardClinico({ recetas, pacientes, ingredientes, setVista }) {
   const pacientesConCobertura = pacientes.map(p => {
     const cobertura = recetas.filter(r => evaluarRecetaParaPaciente(r, p, ingredientes).compatible).length;
     return { paciente: p, cobertura };
   });
-
+ 
   const pacientesBajaCobertura = pacientesConCobertura.filter(pc => pc.cobertura < 3);
-
+ 
   return (
     <div className="space-y-8">
       <div className="border-b border-stone-200 pb-6">
@@ -1277,7 +1745,7 @@ function DashboardClinico({ recetas, pacientes, ingredientes, setVista }) {
         <h2 className="font-display text-4xl font-medium text-stone-900 leading-none">Inicio</h2>
         <p className="text-sm text-stone-600 mt-2">Estado general del catálogo y los pacientes</p>
       </div>
-
+ 
       <div className="grid grid-cols-3 gap-4">
         <button onClick={() => setVista('recetas')} className="bg-white border border-stone-200 p-6 text-left hover:border-stone-900 transition">
           <BookOpen className="w-5 h-5 text-stone-700 mb-3" />
@@ -1298,7 +1766,7 @@ function DashboardClinico({ recetas, pacientes, ingredientes, setVista }) {
           <p className="text-xs text-stone-500 mt-1">activos</p>
         </button>
       </div>
-
+ 
       <div>
         <h3 className="font-display text-2xl font-medium text-stone-900 mb-4">Cobertura de catálogo por paciente</h3>
         <div className="bg-white border border-stone-200">
@@ -1331,14 +1799,14 @@ function DashboardClinico({ recetas, pacientes, ingredientes, setVista }) {
     </div>
   );
 }
-
+ 
 function VistaIngredientes({ ingredientes, setIngredientes, editable }) {
   const [mostrarImportar, setMostrarImportar] = useState(false);
-
+ 
   const importarIngrediente = (nuevo) => {
     setIngredientes(prev => [...prev, { ...nuevo, id: Math.max(...prev.map(i => i.id), 0) + 1 }]);
   };
-
+ 
   return (
     <div className="space-y-8">
       <div className="border-b border-stone-200 pb-6 flex items-end justify-between">
@@ -1381,7 +1849,7 @@ function VistaIngredientes({ ingredientes, setIngredientes, editable }) {
     </div>
   );
 }
-
+ 
 function VistaInbox() {
   return (
     <div className="space-y-8">
@@ -1398,40 +1866,111 @@ function VistaInbox() {
     </div>
   );
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // VISTA: CHEF (diseño del día)
 // ═══════════════════════════════════════════════════════════════
-
-function VistaChef({ recetas, pacientes, ingredientes, caminosSeleccionados, setCaminosSeleccionados, evaluacion, asignaciones }) {
+ 
+function VistaChef({ recetas, pacientes, ingredientes, caminosSeleccionados, setCaminosSeleccionados, evaluacion, asignaciones, momentoActivo, setMomentoActivo, ciclo, diaEditando, onVolver }) {
   const setCamino = (idx, recetaId) => { const n = [...caminosSeleccionados]; n[idx] = recetaId; setCaminosSeleccionados(n); };
-  const hoy = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
-
+ 
+  // Filtrar recetas por momento activo
+  const recetasFiltradas = recetas.filter(r => r.momentosDia.includes(momentoActivo));
+  const numCaminos = CAMINOS_POR_MOMENTO[momentoActivo];
+ 
+  // Estado de cada momento del día para el navegador superior
+  const estadoMomento = (momento) => {
+    if (!ciclo || !diaEditando) return 'vacio';
+    const dia = obtenerCaminosDelDia(ciclo, diaEditando.semana, diaEditando.dia);
+    if (!dia) return 'vacio';
+    const caminos = dia.tiempos[momento] || [];
+    const algunoSeleccionado = caminos.some(c => c !== null);
+    const todosSeleccionados = caminos.length > 0 && caminos.every(c => c !== null);
+    if (todosSeleccionados) return 'completo';
+    if (algunoSeleccionado) return 'parcial';
+    return 'vacio';
+  };
+ 
   return (
     <div className="space-y-8">
-      <div className="flex items-end justify-between border-b border-stone-200 pb-6">
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 mb-2">Diseño del servicio</p>
-          <h2 className="font-display text-4xl font-medium text-stone-900 leading-none capitalize">Almuerzo · {hoy}</h2>
-          <p className="text-sm text-stone-600 mt-2">{pacientes.length} pacientes activos · 3 caminos por definir</p>
+      {onVolver && (
+        <button onClick={onVolver} className="flex items-center gap-2 text-xs uppercase tracking-wider text-stone-600 hover:text-stone-900">
+          <ArrowRight className="w-3.5 h-3.5 rotate-180" />Volver al ciclo
+        </button>
+      )}
+ 
+      <div className="border-b border-stone-200 pb-6">
+        <div className="flex items-end justify-between mb-6">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 mb-2">
+              {diaEditando ? `${ciclo.nombre} · Semana ${diaEditando.semana}` : 'Diseño del servicio'}
+            </p>
+            <h2 className="font-display text-4xl font-medium text-stone-900 leading-none capitalize">
+              {diaEditando ? DIAS_LABEL[diaEditando.dia] : 'Hoy'}
+            </h2>
+            <p className="text-sm text-stone-600 mt-2">{pacientes.length} pacientes activos</p>
+          </div>
+          <div className="text-right">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500">Estado del momento</p>
+            <p className="font-display text-2xl font-medium mt-1">
+              {!evaluacion && <span className="text-stone-400">Pendiente</span>}
+              {evaluacion && evaluacion.estado === 'aprobado' && <span className="text-emerald-700">Aprobado</span>}
+              {evaluacion && evaluacion.estado === 'observacion' && <span className="text-amber-700">Con observación</span>}
+              {evaluacion && evaluacion.estado === 'no_aprobado' && <span className="text-red-700">No aprobado</span>}
+            </p>
+          </div>
         </div>
-        <div className="text-right">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500">Estado</p>
-          <p className="font-display text-2xl font-medium mt-1">
-            {!evaluacion && <span className="text-stone-400">Pendiente</span>}
-            {evaluacion && evaluacion.estado === 'aprobado' && <span className="text-emerald-700">Aprobado</span>}
-            {evaluacion && evaluacion.estado === 'observacion' && <span className="text-amber-700">Con observación</span>}
-            {evaluacion && evaluacion.estado === 'no_aprobado' && <span className="text-red-700">No aprobado</span>}
-          </p>
+ 
+        {/* Selector de momentos del día */}
+        <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-sm">
+          {ORDEN_MOMENTOS.map(momento => {
+            const estado = estadoMomento(momento);
+            const activo = momento === momentoActivo;
+            return (
+              <button
+                key={momento}
+                onClick={() => setMomentoActivo(momento)}
+                className={`flex-1 px-3 py-2.5 text-xs uppercase tracking-wider font-medium transition flex items-center justify-center gap-2 ${
+                  activo ? 'bg-stone-900 text-stone-50' : 'text-stone-600 hover:text-stone-900'
+                }`}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${
+                  estado === 'completo' ? 'bg-emerald-500' :
+                  estado === 'parcial' ? 'bg-amber-500' :
+                  activo ? 'bg-stone-500' : 'bg-stone-300'
+                }`} />
+                {MOMENTOS_LABEL[momento]}
+              </button>
+            );
+          })}
         </div>
       </div>
-
-      <div className="grid grid-cols-3 gap-4">
-        {[0, 1, 2].map(idx => (
-          <CaminoCard key={idx} numero={idx + 1} recetaSeleccionada={caminosSeleccionados[idx]} recetas={recetas} evaluacion={evaluacion && evaluacion.resultados[idx]} asignaciones={asignaciones && asignaciones[idx]} onSelect={(id) => setCamino(idx, id)} />
-        ))}
+ 
+      <div>
+        <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 mb-3">
+          {numCaminos} camino{numCaminos !== 1 ? 's' : ''} para {MOMENTOS_LABEL[momentoActivo]}
+        </p>
+        <div className={`grid gap-4 ${numCaminos === 3 ? 'grid-cols-3' : 'grid-cols-2'}`}>
+          {Array.from({ length: numCaminos }).map((_, idx) => (
+            <CaminoCard 
+              key={`${momentoActivo}-${idx}`} 
+              numero={idx + 1} 
+              recetaSeleccionada={caminosSeleccionados[idx]} 
+              recetas={recetasFiltradas} 
+              evaluacion={evaluacion && evaluacion.resultados[idx]} 
+              asignaciones={asignaciones && asignaciones[idx]} 
+              onSelect={(id) => setCamino(idx, id)} 
+            />
+          ))}
+        </div>
+        {recetasFiltradas.length === 0 && (
+          <div className="mt-4 bg-amber-50 border-l-2 border-amber-600 p-4">
+            <p className="text-xs uppercase tracking-wider text-amber-900 font-medium mb-1">Sin recetas disponibles</p>
+            <p className="text-sm text-amber-800">No hay recetas en el catálogo marcadas para {MOMENTOS_LABEL[momentoActivo]}. La nutricionista debe crear recetas para este momento.</p>
+          </div>
+        )}
       </div>
-
+ 
       {evaluacion && (
         <div className="bg-white border border-stone-200 p-6">
           <div className="flex items-center justify-between mb-6">
@@ -1458,7 +1997,7 @@ function VistaChef({ recetas, pacientes, ingredientes, caminosSeleccionados, set
               </div>
             );
           })()}
-
+ 
           {evaluacion.pacientesNoCubiertos.length > 0 && (
             <div className="bg-red-50 border-l-2 border-red-700 p-4 mb-4">
               <p className="text-xs uppercase tracking-wider text-red-900 font-medium mb-2">Pacientes sin opción válida</p>
@@ -1469,19 +2008,16 @@ function VistaChef({ recetas, pacientes, ingredientes, caminosSeleccionados, set
               ))}
             </div>
           )}
-          {evaluacion.estado === 'aprobado' && (
-            <button className="w-full py-3 bg-stone-900 text-stone-50 text-xs uppercase tracking-[0.2em] font-medium hover:bg-stone-800 transition">Confirmar caminos del día</button>
-          )}
         </div>
       )}
-
+ 
       {evaluacion && asignaciones && evaluacion.estado !== 'no_aprobado' && (
-        <HojaDeServicio asignaciones={asignaciones} caminosSeleccionados={caminosSeleccionados} recetas={recetas} />
+        <HojaDeServicio asignaciones={asignaciones} caminosSeleccionados={caminosSeleccionados} recetas={recetas} numCaminos={numCaminos} momentoLabel={MOMENTOS_LABEL[momentoActivo]} />
       )}
     </div>
   );
 }
-
+ 
 function CaminoCard({ numero, recetaSeleccionada, recetas, evaluacion, asignaciones, onSelect }) {
   const receta = recetaSeleccionada ? recetas.find(r => r.id === recetaSeleccionada) : null;
   return (
@@ -1513,19 +2049,20 @@ function CaminoCard({ numero, recetaSeleccionada, recetas, evaluacion, asignacio
     </div>
   );
 }
-
-function HojaDeServicio({ asignaciones, caminosSeleccionados, recetas }) {
+ 
+function HojaDeServicio({ asignaciones, caminosSeleccionados, recetas, numCaminos, momentoLabel }) {
+  const cols = numCaminos === 3 ? 'grid-cols-3' : 'grid-cols-2';
   return (
     <div className="bg-stone-900 text-stone-50 p-8">
       <div className="flex items-center gap-3 mb-6 pb-4 border-b border-stone-700">
         <ClipboardList className="w-5 h-5" />
         <div>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-stone-400">Hoja de servicio</p>
+          <p className="text-[10px] uppercase tracking-[0.2em] text-stone-400">Hoja de servicio · {momentoLabel}</p>
           <h3 className="font-display text-2xl font-medium">Variaciones por paciente</h3>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-6">
-        {[0, 1, 2].map(idx => {
+      <div className={`grid gap-6 ${cols}`}>
+        {Array.from({ length: numCaminos }).map((_, idx) => {
           const recetaId = caminosSeleccionados[idx];
           const receta = recetaId ? recetas.find(r => r.id === recetaId) : null;
           const pacientesAsignados = asignaciones[idx] || [];
@@ -1556,25 +2093,49 @@ function HojaDeServicio({ asignaciones, caminosSeleccionados, recetas }) {
     </div>
   );
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // VISTA: CATÁLOGO
 // ═══════════════════════════════════════════════════════════════
-
+ 
 function VistaCatalogo({ recetas, setRecetas, ingredientes, pacientes, soloLectura, editable }) {
   const [recetaSeleccionada, setRecetaSeleccionada] = useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [mostrarImportar, setMostrarImportar] = useState(false);
-
+  const [modoSeleccion, setModoSeleccion] = useState(false);
+  const [seleccionados, setSeleccionados] = useState([]);
+  const [confirmarBorrado, setConfirmarBorrado] = useState(false);
+ 
   const guardarReceta = (nuevaReceta) => {
     setRecetas(prev => [...prev, { ...nuevaReceta, id: Math.max(...prev.map(r => r.id), 0) + 1 }]);
     setMostrarFormulario(false);
   };
-
+ 
   const importarReceta = (nuevaReceta) => {
     setRecetas(prev => [...prev, { ...nuevaReceta, id: Math.max(...prev.map(r => r.id), 0) + 1 }]);
   };
-
+ 
+  const toggleSeleccion = (id) => {
+    setSeleccionados(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
+ 
+  const toggleTodos = () => {
+    if (seleccionados.length === recetas.length) setSeleccionados([]);
+    else setSeleccionados(recetas.map(r => r.id));
+  };
+ 
+  const eliminarSeleccionados = () => {
+    setRecetas(prev => prev.filter(r => !seleccionados.includes(r.id)));
+    setSeleccionados([]);
+    setModoSeleccion(false);
+    setConfirmarBorrado(false);
+  };
+ 
+  const cancelarSeleccion = () => {
+    setModoSeleccion(false);
+    setSeleccionados([]);
+  };
+ 
   return (
     <div className="space-y-8">
       <div className="border-b border-stone-200 pb-6 flex items-end justify-between">
@@ -1587,8 +2148,11 @@ function VistaCatalogo({ recetas, setRecetas, ingredientes, pacientes, soloLectu
           {soloLectura && (
             <span className="text-[10px] uppercase tracking-wider text-stone-500 bg-stone-100 px-3 py-1.5">Solo lectura</span>
           )}
-          {editable && (
+          {editable && !modoSeleccion && (
             <>
+              <button onClick={() => setModoSeleccion(true)} className="px-4 py-2 border border-stone-300 text-xs uppercase tracking-wider text-stone-700 hover:bg-stone-50">
+                Seleccionar
+              </button>
               <button onClick={() => setMostrarImportar(true)} className="px-4 py-2 border border-stone-300 text-xs uppercase tracking-wider text-stone-700 hover:bg-stone-50 flex items-center gap-2">
                 <Upload className="w-3.5 h-3.5" />Importar CSV
               </button>
@@ -1597,13 +2161,45 @@ function VistaCatalogo({ recetas, setRecetas, ingredientes, pacientes, soloLectu
               </button>
             </>
           )}
+          {modoSeleccion && (
+            <>
+              <button onClick={toggleTodos} className="text-xs text-stone-700 hover:underline">
+                {seleccionados.length === recetas.length ? 'Deseleccionar todo' : 'Seleccionar todo'}
+              </button>
+              <span className="text-xs text-stone-700">{seleccionados.length} seleccionada{seleccionados.length !== 1 ? 's' : ''}</span>
+              <button onClick={cancelarSeleccion} className="px-4 py-2 border border-stone-300 text-xs uppercase tracking-wider text-stone-700 hover:bg-stone-50">
+                Cancelar
+              </button>
+              <button 
+                onClick={() => setConfirmarBorrado(true)} 
+                disabled={seleccionados.length === 0}
+                className="px-4 py-2 bg-red-700 text-stone-50 text-xs uppercase tracking-wider hover:bg-red-800 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                <X className="w-3.5 h-3.5" />Eliminar {seleccionados.length > 0 && `(${seleccionados.length})`}
+              </button>
+            </>
+          )}
         </div>
       </div>
       <div className="grid grid-cols-3 gap-4">
         {recetas.map(r => {
           const cobertura = pacientes.filter(p => evaluarRecetaParaPaciente(r, p, ingredientes).compatible).length;
+          const estaSeleccionada = seleccionados.includes(r.id);
           return (
-            <div key={r.id} onClick={() => setRecetaSeleccionada(r)} className="bg-white border border-stone-200 p-5 hover:border-stone-900 cursor-pointer transition">
+            <div 
+              key={r.id} 
+              onClick={() => modoSeleccion ? toggleSeleccion(r.id) : setRecetaSeleccionada(r)} 
+              className={`bg-white border p-5 cursor-pointer transition ${
+                modoSeleccion 
+                  ? estaSeleccionada ? 'border-stone-900 bg-stone-100' : 'border-stone-200 hover:border-stone-400'
+                  : 'border-stone-200 hover:border-stone-900'
+              }`}
+            >
+              {modoSeleccion && (
+                <div className="mb-3">
+                  <input type="checkbox" checked={estaSeleccionada} onChange={() => toggleSeleccion(r.id)} className="cursor-pointer" onClick={e => e.stopPropagation()} />
+                </div>
+              )}
               <div className="flex items-center justify-between mb-2 gap-2">
                 <p className="text-[10px] uppercase tracking-wider text-stone-500 leading-tight">
                   {r.momentosDia.map(m => MOMENTOS_LABEL[m] || m).join(' · ')}
@@ -1622,13 +2218,27 @@ function VistaCatalogo({ recetas, setRecetas, ingredientes, pacientes, soloLectu
           );
         })}
       </div>
+      {recetas.length === 0 && (
+        <div className="bg-white border border-stone-200 px-6 py-12 text-center">
+          <p className="text-sm text-stone-500">No hay recetas en el catálogo</p>
+          <p className="text-xs text-stone-400 mt-1">Crea una nueva o importa desde CSV</p>
+        </div>
+      )}
       {recetaSeleccionada && <RecetaDetalle receta={recetaSeleccionada} ingredientes={ingredientes} pacientes={pacientes} onClose={() => setRecetaSeleccionada(null)} />}
       {mostrarFormulario && <FormularioReceta ingredientes={ingredientes} onSave={guardarReceta} onCancel={() => setMostrarFormulario(false)} />}
       {mostrarImportar && <ModalImportarCSV tipo="receta" ingredientesCatalogo={ingredientes} onSave={importarReceta} onCancel={() => setMostrarImportar(false)} />}
+      {confirmarBorrado && (
+        <ModalConfirmacion
+          titulo="Eliminar recetas"
+          mensaje={`¿Confirmas que quieres eliminar ${seleccionados.length} receta${seleccionados.length !== 1 ? 's' : ''}? Esta acción no se puede deshacer.`}
+          onConfirmar={eliminarSeleccionados}
+          onCancelar={() => setConfirmarBorrado(false)}
+        />
+      )}
     </div>
   );
 }
-
+ 
 function RecetaDetalle({ receta, ingredientes, pacientes, onClose }) {
   const [tab, setTab] = useState('propiedades');
   return (
@@ -1667,7 +2277,7 @@ function RecetaDetalle({ receta, ingredientes, pacientes, onClose }) {
     </div>
   );
 }
-
+ 
 function TabPropiedades({ receta, ingredientes, pacientes }) {
   const cobertura = pacientes.filter(p => evaluarRecetaParaPaciente(receta, p, ingredientes).compatible).length;
   return (
@@ -1684,20 +2294,20 @@ function TabPropiedades({ receta, ingredientes, pacientes }) {
           </div>
         </div>
       </div>
-
+ 
       <Section title="Clasificación clínica">
         <DataRow label="Objetivo clínico" values={receta.objetivosClinicos.map(o => OBJETIVOS_LABEL[o])} />
         <DataRow label="Función nutricional" values={receta.funcionNutricional.map(f => FUNCIONES_LABEL[f])} />
         <DataRow label="Acción cerebral" values={receta.accionCerebral.map(a => ACCION_CEREBRAL_LABEL[a])} />
       </Section>
-
+ 
       <Section title="Clasificación gastronómica">
         <DataRow label="Técnicas" values={receta.tecnicas.map(t => TECNICAS_LABEL[t])} />
         <DataRow label="Base de sabor" values={[receta.baseSabor]} capitalize />
         <DataRow label="Temperatura de servicio" values={[receta.temperaturaServicio]} capitalize />
         <DataRow label="Momentos del día" values={receta.momentosDia.map(m => MOMENTOS_LABEL[m] || m)} />
       </Section>
-
+ 
       <Section title="Niveles IDDSI">
         <div className="bg-stone-50 border border-stone-100 p-4 space-y-2 text-sm">
           <div className="flex justify-between">
@@ -1710,13 +2320,13 @@ function TabPropiedades({ receta, ingredientes, pacientes }) {
           </div>
         </div>
       </Section>
-
+ 
       <Section title="Composición por capas">
         <CapaIngredientes label="Capa base · olla principal" color="stone" ingredientes={receta.base} ingredientesDB={ingredientes} />
         {receta.removibles.length > 0 && <CapaIngredientes label="Capa removible · antes de procesar" color="amber" ingredientes={receta.removibles} ingredientesDB={ingredientes} />}
         {receta.anadibles.length > 0 && <CapaIngredientes label="Capa añadible · al servir" color="emerald" ingredientes={receta.anadibles} ingredientesDB={ingredientes} />}
       </Section>
-
+ 
       <Section title="Modificaciones aceptadas">
         <div className="flex flex-wrap gap-2">
           {receta.modificacionesAceptadas.map(m => (
@@ -1724,7 +2334,7 @@ function TabPropiedades({ receta, ingredientes, pacientes }) {
           ))}
         </div>
       </Section>
-
+ 
       {receta.notasCriticas && receta.notasCriticas.length > 0 && (
         <Section title="Notas críticas">
           <div className="space-y-2">
@@ -1739,7 +2349,7 @@ function TabPropiedades({ receta, ingredientes, pacientes }) {
     </div>
   );
 }
-
+ 
 function TabFichaTecnica({ receta, ingredientes }) {
   const [porciones, setPorciones] = useState(receta.porcionesBase);
   const factor = porciones / receta.porcionesBase;
@@ -1751,7 +2361,7 @@ function TabFichaTecnica({ receta, ingredientes }) {
     const ing = ingredientes.find(i => i.id === item.id);
     return { nombre: ing ? ing.nombre : '', cantidad: Math.round(item.cantidadG * factor), original: item.cantidadG };
   };
-
+ 
   return (
     <div className="p-8 space-y-8">
       <div className="bg-stone-900 text-stone-50 p-5 flex items-center justify-between">
@@ -1772,7 +2382,7 @@ function TabFichaTecnica({ receta, ingredientes }) {
           </button>
         </div>
       </div>
-
+ 
       <Section title="Ingredientes" subtitle={`Cantidades escaladas para ${porciones} porciones`}>
         <div className="space-y-1">
           <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 mb-2">Capa base</p>
@@ -1818,7 +2428,7 @@ function TabFichaTecnica({ receta, ingredientes }) {
           </div>
         )}
       </Section>
-
+ 
       <div className="grid grid-cols-2 gap-4">
         <div className="border border-stone-200 p-4">
           <div className="flex items-center gap-2 mb-2"><Clock className="w-3.5 h-3.5 text-stone-500" /><p className="text-[10px] uppercase tracking-[0.2em] text-stone-500">Tiempo total</p></div>
@@ -1829,7 +2439,7 @@ function TabFichaTecnica({ receta, ingredientes }) {
           <p className="font-display text-2xl font-medium text-stone-900 capitalize">{receta.temperaturaServicio}</p>
         </div>
       </div>
-
+ 
       <Section title="Proceso de preparación" subtitle="Pasos secuenciales con tiempo y temperatura">
         <div className="space-y-3">
           {receta.proceso.map(paso => (
@@ -1847,13 +2457,13 @@ function TabFichaTecnica({ receta, ingredientes }) {
           ))}
         </div>
       </Section>
-
+ 
       <Section title="Textura esperada">
         <div className="bg-stone-50 border border-stone-200 p-4">
           <p className="text-sm text-stone-800">{receta.texturaEsperada}</p>
         </div>
       </Section>
-
+ 
       {receta.notasCriticas && receta.notasCriticas.length > 0 && (
         <Section title="Notas críticas">
           <div className="space-y-2">
@@ -1868,7 +2478,7 @@ function TabFichaTecnica({ receta, ingredientes }) {
     </div>
   );
 }
-
+ 
 function Section({ title, subtitle, children }) {
   return (
     <div>
@@ -1880,7 +2490,7 @@ function Section({ title, subtitle, children }) {
     </div>
   );
 }
-
+ 
 function DataRow({ label, values, capitalize = false }) {
   return (
     <div className="flex border-b border-stone-100 py-2.5">
@@ -1889,7 +2499,7 @@ function DataRow({ label, values, capitalize = false }) {
     </div>
   );
 }
-
+ 
 function CapaIngredientes({ label, color, ingredientes, ingredientesDB }) {
   const colorClass = { stone: 'text-stone-500', amber: 'text-amber-700', emerald: 'text-emerald-700' }[color];
   return (
@@ -1909,20 +2519,44 @@ function CapaIngredientes({ label, color, ingredientes, ingredientesDB }) {
     </div>
   );
 }
-
+ 
 function VistaPacientes({ pacientes, setPacientes, soloLectura, editable }) {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const [mostrarImportar, setMostrarImportar] = useState(false);
-
+  const [modoSeleccion, setModoSeleccion] = useState(false);
+  const [seleccionados, setSeleccionados] = useState([]);
+  const [confirmarBorrado, setConfirmarBorrado] = useState(false);
+ 
   const guardarPaciente = (nuevoPaciente) => {
     setPacientes(prev => [...prev, { ...nuevoPaciente, id: Math.max(...prev.map(p => p.id), 0) + 1 }]);
     setMostrarFormulario(false);
   };
-
+ 
   const importarPaciente = (nuevoPaciente) => {
     setPacientes(prev => [...prev, { ...nuevoPaciente, id: Math.max(...prev.map(p => p.id), 0) + 1 }]);
   };
-
+ 
+  const toggleSeleccion = (id) => {
+    setSeleccionados(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
+ 
+  const toggleTodos = () => {
+    if (seleccionados.length === pacientes.length) setSeleccionados([]);
+    else setSeleccionados(pacientes.map(p => p.id));
+  };
+ 
+  const eliminarSeleccionados = () => {
+    setPacientes(prev => prev.filter(p => !seleccionados.includes(p.id)));
+    setSeleccionados([]);
+    setModoSeleccion(false);
+    setConfirmarBorrado(false);
+  };
+ 
+  const cancelarSeleccion = () => {
+    setModoSeleccion(false);
+    setSeleccionados([]);
+  };
+ 
   return (
     <div className="space-y-8">
       <div className="border-b border-stone-200 pb-6 flex items-end justify-between">
@@ -1935,8 +2569,11 @@ function VistaPacientes({ pacientes, setPacientes, soloLectura, editable }) {
           {soloLectura && (
             <span className="text-[10px] uppercase tracking-wider text-stone-500 bg-stone-100 px-3 py-1.5">Solo lectura</span>
           )}
-          {editable && (
+          {editable && !modoSeleccion && (
             <>
+              <button onClick={() => setModoSeleccion(true)} className="px-4 py-2 border border-stone-300 text-xs uppercase tracking-wider text-stone-700 hover:bg-stone-50">
+                Seleccionar
+              </button>
               <button onClick={() => setMostrarImportar(true)} className="px-4 py-2 border border-stone-300 text-xs uppercase tracking-wider text-stone-700 hover:bg-stone-50 flex items-center gap-2">
                 <Upload className="w-3.5 h-3.5" />Importar CSV
               </button>
@@ -1945,14 +2582,43 @@ function VistaPacientes({ pacientes, setPacientes, soloLectura, editable }) {
               </button>
             </>
           )}
+          {modoSeleccion && (
+            <>
+              <span className="text-xs text-stone-700">{seleccionados.length} seleccionado{seleccionados.length !== 1 ? 's' : ''}</span>
+              <button onClick={cancelarSeleccion} className="px-4 py-2 border border-stone-300 text-xs uppercase tracking-wider text-stone-700 hover:bg-stone-50">
+                Cancelar
+              </button>
+              <button 
+                onClick={() => setConfirmarBorrado(true)} 
+                disabled={seleccionados.length === 0}
+                className="px-4 py-2 bg-red-700 text-stone-50 text-xs uppercase tracking-wider hover:bg-red-800 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                <X className="w-3.5 h-3.5" />Eliminar {seleccionados.length > 0 && `(${seleccionados.length})`}
+              </button>
+            </>
+          )}
         </div>
       </div>
       <div className="bg-white border border-stone-200">
-        <div className="grid grid-cols-6 gap-4 px-6 py-3 border-b border-stone-200 text-[10px] uppercase tracking-wider text-stone-500 font-medium">
+        <div className={`grid gap-4 px-6 py-3 border-b border-stone-200 text-[10px] uppercase tracking-wider text-stone-500 font-medium ${modoSeleccion ? 'grid-cols-[40px_repeat(6,1fr)]' : 'grid-cols-6'}`}>
+          {modoSeleccion && (
+            <div>
+              <input type="checkbox" checked={seleccionados.length === pacientes.length && pacientes.length > 0} onChange={toggleTodos} className="cursor-pointer" />
+            </div>
+          )}
           <div>Nombre</div><div>Hab.</div><div>Edad</div><div>IDDSI</div><div>Condiciones</div><div>Objetivos</div>
         </div>
         {pacientes.map(p => (
-          <div key={p.id} className="grid grid-cols-6 gap-4 px-6 py-4 border-b border-stone-100 hover:bg-stone-50 text-sm">
+          <div 
+            key={p.id} 
+            onClick={() => modoSeleccion && toggleSeleccion(p.id)}
+            className={`grid gap-4 px-6 py-4 border-b border-stone-100 text-sm ${modoSeleccion ? 'grid-cols-[40px_repeat(6,1fr)] cursor-pointer hover:bg-stone-50' : 'grid-cols-6 hover:bg-stone-50'} ${seleccionados.includes(p.id) ? 'bg-stone-100' : ''}`}
+          >
+            {modoSeleccion && (
+              <div>
+                <input type="checkbox" checked={seleccionados.includes(p.id)} onChange={() => toggleSeleccion(p.id)} className="cursor-pointer" onClick={e => e.stopPropagation()} />
+              </div>
+            )}
             <div className="font-medium text-stone-900">{p.nombre}</div>
             <div className="text-stone-600">{p.habitacion}</div>
             <div className="text-stone-600">{p.edad}</div>
@@ -1964,17 +2630,59 @@ function VistaPacientes({ pacientes, setPacientes, soloLectura, editable }) {
             <div className="text-stone-600 text-xs">{p.objetivos.map(o => OBJETIVOS_LABEL[o]).join(', ')}</div>
           </div>
         ))}
+        {pacientes.length === 0 && (
+          <div className="px-6 py-12 text-center">
+            <p className="text-sm text-stone-500">No hay pacientes registrados</p>
+            <p className="text-xs text-stone-400 mt-1">Crea uno nuevo o importa desde CSV</p>
+          </div>
+        )}
       </div>
       {mostrarFormulario && <FormularioPaciente onSave={guardarPaciente} onCancel={() => setMostrarFormulario(false)} />}
       {mostrarImportar && <ModalImportarCSV tipo="paciente" ingredientesCatalogo={[]} onSave={importarPaciente} onCancel={() => setMostrarImportar(false)} />}
+      {confirmarBorrado && (
+        <ModalConfirmacion
+          titulo="Eliminar pacientes"
+          mensaje={`¿Confirmas que quieres eliminar ${seleccionados.length} paciente${seleccionados.length !== 1 ? 's' : ''}? Esta acción no se puede deshacer.`}
+          onConfirmar={eliminarSeleccionados}
+          onCancelar={() => setConfirmarBorrado(false)}
+        />
+      )}
     </div>
   );
 }
-
+ 
+// ═══════════════════════════════════════════════════════════════
+// MODAL DE CONFIRMACIÓN
+// ═══════════════════════════════════════════════════════════════
+ 
+function ModalConfirmacion({ titulo, mensaje, onConfirmar, onCancelar }) {
+  return (
+    <div className="fixed inset-0 bg-stone-900/60 z-[60] flex items-center justify-center p-6" onClick={onCancelar}>
+      <div className="bg-white max-w-md w-full p-8" onClick={e => e.stopPropagation()}>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-red-700 rounded-sm flex items-center justify-center">
+            <AlertTriangle className="w-5 h-5 text-stone-50" />
+          </div>
+          <h3 className="font-display text-xl font-medium text-stone-900">{titulo}</h3>
+        </div>
+        <p className="text-sm text-stone-700 mb-6 leading-relaxed">{mensaje}</p>
+        <div className="flex gap-2">
+          <button onClick={onCancelar} className="flex-1 py-2.5 border border-stone-300 text-xs uppercase tracking-wider text-stone-700 hover:bg-stone-50">
+            Cancelar
+          </button>
+          <button onClick={onConfirmar} className="flex-1 py-2.5 bg-red-700 text-stone-50 text-xs uppercase tracking-wider hover:bg-red-800">
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+ 
 // ═══════════════════════════════════════════════════════════════
 // FORMULARIO PACIENTE - CON CATÁLOGOS VIVOS
 // ═══════════════════════════════════════════════════════════════
-
+ 
 function FormularioPaciente({ onSave, onCancel }) {
   const [nombre, setNombre] = useState('');
   const [habitacion, setHabitacion] = useState('');
@@ -1990,14 +2698,14 @@ function FormularioPaciente({ onSave, onCancel }) {
   const [catalogoMedicamentos, setCatalogoMedicamentos] = useState({ warfarina: 'Warfarina', estatinas: 'Estatinas', metformina: 'Metformina' });
   const [catalogoAlergias, setCatalogoAlergias] = useState({ alergia_pescado: 'Pescado', alergia_lacteos: 'Lácteos', alergia_gluten: 'Gluten', alergia_nuez: 'Nuez' });
   const [catalogoObjetivos, setCatalogoObjetivos] = useState({ ...OBJETIVOS_LABEL });
-
+ 
   const [mostrarConsulta, setMostrarConsulta] = useState(null); // { tipo, callback }
-
+ 
   const toggle = (arr, setArr, value) => {
     if (arr.includes(value)) setArr(arr.filter(x => x !== value));
     else setArr([...arr, value]);
   };
-
+ 
   const handleSubmit = () => {
     if (!nombre || !habitacion || !edad) {
       alert('Completa nombre, habitación y edad');
@@ -2008,7 +2716,7 @@ function FormularioPaciente({ onSave, onCancel }) {
       condiciones, medicamentos, alergias, objetivos
     });
   };
-
+ 
   // Callbacks de agregado al catálogo con propagación
   const agregarCondicionAlCatalogo = (key, data) => {
     setCatalogoCondiciones({ ...catalogoCondiciones, [key]: data.nombre });
@@ -2032,22 +2740,22 @@ function FormularioPaciente({ onSave, onCancel }) {
       });
     }
   };
-
+ 
   const agregarMedicamentoAlCatalogo = (key, data) => {
     setCatalogoMedicamentos({ ...catalogoMedicamentos, [key]: data.nombre });
     setMedicamentos([...medicamentos, key]);
   };
-
+ 
   const agregarAlergiaAlCatalogo = (key, data) => {
     setCatalogoAlergias({ ...catalogoAlergias, [key]: data.nombre });
     setAlergias([...alergias, key]);
   };
-
+ 
   const agregarObjetivoAlCatalogo = (key, data) => {
     setCatalogoObjetivos({ ...catalogoObjetivos, [key]: data.nombre });
     setObjetivos([...objetivos, key]);
   };
-
+ 
   return (
     <>
       <div className="fixed inset-0 bg-stone-900/40 z-50 flex items-center justify-center p-6" onClick={onCancel}>
@@ -2056,7 +2764,7 @@ function FormularioPaciente({ onSave, onCancel }) {
             <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 mb-2">Nuevo registro</p>
             <h3 className="font-display text-3xl font-medium text-stone-900">Crear paciente</h3>
           </div>
-
+ 
           <div className="flex-1 overflow-y-auto p-8 space-y-8" style={{ minHeight: 0 }}>
             
             <Section title="Datos básicos">
@@ -2077,7 +2785,7 @@ function FormularioPaciente({ onSave, onCancel }) {
                 </Field>
               </div>
             </Section>
-
+ 
             <SeccionCatalogoVivo
               titulo="Condiciones médicas"
               opciones={catalogoCondiciones}
@@ -2086,7 +2794,7 @@ function FormularioPaciente({ onSave, onCancel }) {
               tipo="condicion"
               onAgregarAlCatalogo={() => setMostrarConsulta({ tipo: 'condicion' })}
             />
-
+ 
             <SeccionCatalogoVivo
               titulo="Medicamentos activos"
               opciones={catalogoMedicamentos}
@@ -2095,7 +2803,7 @@ function FormularioPaciente({ onSave, onCancel }) {
               tipo="medicamento"
               onAgregarAlCatalogo={() => setMostrarConsulta({ tipo: 'medicamento' })}
             />
-
+ 
             <SeccionCatalogoVivo
               titulo="Alergias"
               opciones={catalogoAlergias}
@@ -2105,7 +2813,7 @@ function FormularioPaciente({ onSave, onCancel }) {
               variant="alergia"
               onAgregarAlCatalogo={() => setMostrarConsulta({ tipo: 'alergia' })}
             />
-
+ 
             <SeccionCatalogoVivo
               titulo="Objetivos clínicos"
               opciones={catalogoObjetivos}
@@ -2115,14 +2823,14 @@ function FormularioPaciente({ onSave, onCancel }) {
               onAgregarAlCatalogo={() => setMostrarConsulta({ tipo: 'objetivo' })}
             />
           </div>
-
+ 
           <div className="p-4 border-t border-stone-200 flex-shrink-0 flex gap-2">
             <button onClick={onCancel} className="flex-1 py-3 border border-stone-300 text-xs uppercase tracking-wider text-stone-700 hover:bg-stone-50">Cancelar</button>
             <button onClick={handleSubmit} className="flex-1 py-3 bg-stone-900 text-stone-50 text-xs uppercase tracking-[0.2em] hover:bg-stone-800">Guardar paciente</button>
           </div>
         </div>
       </div>
-
+ 
       {mostrarConsulta && (
         <ConsultaClinica
           tipo={mostrarConsulta.tipo}
@@ -2139,7 +2847,7 @@ function FormularioPaciente({ onSave, onCancel }) {
     </>
   );
 }
-
+ 
 function SeccionCatalogoVivo({ titulo, opciones, seleccionadas, onToggle, variant, onAgregarAlCatalogo }) {
   return (
     <div>
@@ -2167,45 +2875,45 @@ function SeccionCatalogoVivo({ titulo, opciones, seleccionadas, onToggle, varian
     </div>
   );
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // CONSULTA CLÍNICA - simula consulta a APIs reales
 // ═══════════════════════════════════════════════════════════════
-
+ 
 function ConsultaClinica({ tipo, onClose, onAgregar }) {
   const [paso, setPaso] = useState('busqueda'); // busqueda → consultando → resultado
   const [busqueda, setBusqueda] = useState('');
   const [resultado, setResultado] = useState(null);
   const [resultadoKey, setResultadoKey] = useState(null);
-
+ 
   const titulos = {
     condicion: 'Agregar condición médica',
     medicamento: 'Agregar medicamento',
     alergia: 'Agregar alergia',
     objetivo: 'Agregar objetivo clínico'
   };
-
+ 
   const placeholders = {
     condicion: 'Ej: Parkinson, Alzheimer, EPOC...',
     medicamento: 'Ej: Levodopa, Donepezilo, Furosemida...',
     alergia: 'Ej: Mariscos, Huevo, Soya...',
     objetivo: 'Ej: Sarcopenia, Estreñimiento, Antiinflamatorio...'
   };
-
+ 
   const fuentes = {
     condicion: ['NIH', 'Mayo Clinic', 'PubMed'],
     medicamento: ['Drugs.com', 'FDA Label', 'NIH'],
     alergia: ['FARE', 'NIH Allergy'],
     objetivo: ['NIH ODS', 'Dietas validadas (MIND/DASH)', 'PubMed']
   };
-
+ 
   const baseConocimiento = {
     condicion: CONOCIMIENTO_CONDICIONES,
     medicamento: CONOCIMIENTO_MEDICAMENTOS,
     alergia: CONOCIMIENTO_ALERGIAS,
     objetivo: CONOCIMIENTO_OBJETIVOS
   }[tipo];
-
+ 
   const buscar = () => {
     setPaso('consultando');
     const termino = busqueda.toLowerCase().trim().replace(/ /g, '_').replace(/[áéíóú]/g, m => ({á:'a',é:'e',í:'i',ó:'o',ú:'u'}[m]));
@@ -2226,7 +2934,7 @@ function ConsultaClinica({ tipo, onClose, onAgregar }) {
       }
     }, 2200);
   };
-
+ 
   return (
     <div className="fixed inset-0 bg-stone-900/60 z-[60] flex items-center justify-center p-6" onClick={onClose}>
       <div className="bg-white max-w-2xl w-full flex flex-col" style={{ maxHeight: '92vh' }} onClick={e => e.stopPropagation()}>
@@ -2235,7 +2943,7 @@ function ConsultaClinica({ tipo, onClose, onAgregar }) {
           <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 mb-1">Sistema de conocimiento clínico</p>
           <h3 className="font-display text-2xl font-medium text-stone-900">{titulos[tipo]}</h3>
         </div>
-
+ 
         <div className="flex-1 overflow-y-auto" style={{ minHeight: 0 }}>
           
           {paso === 'busqueda' && (
@@ -2270,7 +2978,7 @@ function ConsultaClinica({ tipo, onClose, onAgregar }) {
               </button>
             </div>
           )}
-
+ 
           {paso === 'consultando' && (
             <div className="p-12 text-center">
               <div className="inline-block w-12 h-12 border-2 border-stone-300 border-t-stone-900 rounded-full mb-6" style={{ animation: 'spin 0.8s linear infinite' }} />
@@ -2287,7 +2995,7 @@ function ConsultaClinica({ tipo, onClose, onAgregar }) {
               <style>{`@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }`}</style>
             </div>
           )}
-
+ 
           {paso === 'resultado' && resultado && (
             <div className="p-8 space-y-6">
               <div className="bg-emerald-50 border-l-2 border-emerald-700 p-4">
@@ -2297,14 +3005,14 @@ function ConsultaClinica({ tipo, onClose, onAgregar }) {
                 </div>
                 <p className="text-xs text-emerald-800">El sistema extrajo y estructuró toda la información clínica relevante</p>
               </div>
-
+ 
               <div>
                 <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 mb-1">Categoría</p>
                 <p className="text-sm text-stone-700 mb-3">{resultado.categoria}</p>
                 <h4 className="font-display text-3xl font-medium text-stone-900 mb-2">{resultado.nombre}</h4>
                 <p className="text-sm text-stone-600 leading-relaxed">{resultado.descripcion}</p>
               </div>
-
+ 
               {resultado.restricciones && (
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 mb-2">Restricciones absorbidas</p>
@@ -2327,7 +3035,7 @@ function ConsultaClinica({ tipo, onClose, onAgregar }) {
                   </div>
                 </div>
               )}
-
+ 
               {resultado.recomendaciones && (
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.2em] text-emerald-700 mb-2">Recomendaciones absorbidas</p>
@@ -2341,7 +3049,7 @@ function ConsultaClinica({ tipo, onClose, onAgregar }) {
                   </div>
                 </div>
               )}
-
+ 
               {resultado.interacciones_alimentarias && (
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.2em] text-amber-700 mb-2">Interacciones alimentarias</p>
@@ -2358,7 +3066,7 @@ function ConsultaClinica({ tipo, onClose, onAgregar }) {
                   </div>
                 </div>
               )}
-
+ 
               {resultado.ingredientes_excluidos && (
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.2em] text-red-700 mb-2">Ingredientes excluidos</p>
@@ -2379,7 +3087,7 @@ function ConsultaClinica({ tipo, onClose, onAgregar }) {
                   )}
                 </div>
               )}
-
+ 
               {resultado.ingredientes_prioritarios && (
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.2em] text-emerald-700 mb-2">Ingredientes prioritarios</p>
@@ -2390,7 +3098,7 @@ function ConsultaClinica({ tipo, onClose, onAgregar }) {
                   </div>
                 </div>
               )}
-
+ 
               {(resultado.medicamentos_asociados || resultado.objetivos_asociados) && (
                 <div className="bg-stone-50 border border-stone-200 p-4">
                   <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 mb-2">Propagación automática</p>
@@ -2413,14 +3121,14 @@ function ConsultaClinica({ tipo, onClose, onAgregar }) {
                   )}
                 </div>
               )}
-
+ 
               <div className="border-t border-stone-200 pt-4">
                 <p className="text-[10px] uppercase tracking-wider text-stone-500 mb-1">Fuente clínica</p>
                 <p className="text-xs text-stone-700 italic">{resultado.fuente}</p>
               </div>
             </div>
           )}
-
+ 
           {paso === 'no_encontrado' && (
             <div className="p-12 text-center">
               <AlertTriangle className="w-10 h-10 text-amber-600 mx-auto mb-4" />
@@ -2430,7 +3138,7 @@ function ConsultaClinica({ tipo, onClose, onAgregar }) {
             </div>
           )}
         </div>
-
+ 
         <div className="p-4 border-t border-stone-200 flex-shrink-0 flex gap-2">
           {paso === 'resultado' ? (
             <>
@@ -2450,11 +3158,11 @@ function ConsultaClinica({ tipo, onClose, onAgregar }) {
     </div>
   );
 }
-
+ 
 // ═══════════════════════════════════════════════════════════════
 // FORMULARIO RECETA
 // ═══════════════════════════════════════════════════════════════
-
+ 
 function FormularioReceta({ ingredientes, onSave, onCancel }) {
   const [nombre, setNombre] = useState('');
   const [momentosDia, setMomentosDia] = useState(['almuerzo']);
@@ -2470,39 +3178,39 @@ function FormularioReceta({ ingredientes, onSave, onCancel }) {
   const [tecnicas, setTecnicas] = useState([]);
   const [texturaEsperada, setTexturaEsperada] = useState('');
   const [proceso, setProceso] = useState([{ paso: 1, accion: '', ingrediente: '', tiempo: null, temperatura: null, nota: '' }]);
-
+ 
   const toggle = (arr, setArr, value) => {
     if (arr.includes(value)) setArr(arr.filter(x => x !== value));
     else setArr([...arr, value]);
   };
-
+ 
   const agregarIngrediente = (capa, setCapa, id) => {
     if (capa.find(item => item.id === id)) return;
     setCapa([...capa, { id, cantidadG: 50 }]);
   };
-
+ 
   const actualizarCantidad = (capa, setCapa, id, cantidadG) => {
     setCapa(capa.map(item => item.id === id ? { ...item, cantidadG: parseInt(cantidadG) || 0 } : item));
   };
-
+ 
   const removerIngrediente = (capa, setCapa, id) => {
     setCapa(capa.filter(item => item.id !== id));
   };
-
+ 
   const agregarPaso = () => {
     setProceso([...proceso, { paso: proceso.length + 1, accion: '', ingrediente: '', tiempo: null, temperatura: null, nota: '' }]);
   };
-
+ 
   const actualizarPaso = (idx, campo, valor) => {
     const nuevo = [...proceso];
     nuevo[idx] = { ...nuevo[idx], [campo]: valor };
     setProceso(nuevo);
   };
-
+ 
   const eliminarPaso = (idx) => {
     setProceso(proceso.filter((_, i) => i !== idx).map((p, i) => ({ ...p, paso: i + 1 })));
   };
-
+ 
   const handleSubmit = () => {
     if (!nombre || base.length === 0 || momentosDia.length === 0) {
       alert('Completa nombre, al menos un momento del día y al menos un ingrediente base');
@@ -2520,7 +3228,7 @@ function FormularioReceta({ ingredientes, onSave, onCancel }) {
       notasCriticas: []
     });
   };
-
+ 
   return (
     <div className="fixed inset-0 bg-stone-900/40 z-50 flex items-center justify-center p-6" onClick={onCancel}>
       <div className="bg-white max-w-3xl w-full flex flex-col" style={{ maxHeight: '92vh' }} onClick={e => e.stopPropagation()}>
@@ -2528,7 +3236,7 @@ function FormularioReceta({ ingredientes, onSave, onCancel }) {
           <p className="text-[10px] uppercase tracking-[0.2em] text-stone-500 mb-2">Nueva receta matriz</p>
           <h3 className="font-display text-3xl font-medium text-stone-900">Crear receta</h3>
         </div>
-
+ 
         <div className="flex-1 overflow-y-auto p-8 space-y-8" style={{ minHeight: 0 }}>
           
           <Section title="Datos básicos">
@@ -2549,7 +3257,7 @@ function FormularioReceta({ ingredientes, onSave, onCancel }) {
                 ))}
               </div>
             </div>
-
+ 
             <div className="grid grid-cols-2 gap-4 mt-3">
               <Field label="Base de sabor">
                 <select value={baseSabor} onChange={e => setBaseSabor(e.target.value)} className="w-full px-3 py-2.5 border border-stone-300 bg-stone-50 text-sm">
@@ -2583,13 +3291,13 @@ function FormularioReceta({ ingredientes, onSave, onCancel }) {
               </Field>
             </div>
           </Section>
-
+ 
           <CapaSelector label="Capa base · olla principal" color="stone" capa={base} setCapa={setBase} ingredientes={ingredientes} agregarIngrediente={agregarIngrediente} actualizarCantidad={actualizarCantidad} removerIngrediente={removerIngrediente} />
-
+ 
           <CapaSelector label="Capa removible · antes de procesar" color="amber" capa={removibles} setCapa={setRemovibles} ingredientes={ingredientes} agregarIngrediente={agregarIngrediente} actualizarCantidad={actualizarCantidad} removerIngrediente={removerIngrediente} />
-
+ 
           <CapaSelector label="Capa añadible · al servir" color="emerald" capa={anadibles} setCapa={setAnadibles} ingredientes={ingredientes} agregarIngrediente={agregarIngrediente} actualizarCantidad={actualizarCantidad} removerIngrediente={removerIngrediente} />
-
+ 
           <Section title="Objetivos clínicos">
             <div className="flex flex-wrap gap-2">
               {Object.entries(OBJETIVOS_LABEL).map(([key, label]) => (
@@ -2599,7 +3307,7 @@ function FormularioReceta({ ingredientes, onSave, onCancel }) {
               ))}
             </div>
           </Section>
-
+ 
           <Section title="Técnicas utilizadas">
             <div className="flex flex-wrap gap-2">
               {Object.entries(TECNICAS_LABEL).map(([key, label]) => (
@@ -2609,11 +3317,11 @@ function FormularioReceta({ ingredientes, onSave, onCancel }) {
               ))}
             </div>
           </Section>
-
+ 
           <Section title="Textura esperada">
             <textarea value={texturaEsperada} onChange={e => setTexturaEsperada(e.target.value)} className="w-full px-3 py-2.5 border border-stone-300 bg-stone-50 text-sm focus:outline-none focus:border-stone-900" rows={2} placeholder="Lisa, color uniforme, cae lento de la cuchara" />
           </Section>
-
+ 
           <Section title="Proceso de preparación">
             <div className="space-y-3">
               {proceso.map((paso, idx) => (
@@ -2639,7 +3347,7 @@ function FormularioReceta({ ingredientes, onSave, onCancel }) {
             </div>
           </Section>
         </div>
-
+ 
         <div className="p-4 border-t border-stone-200 flex-shrink-0 flex gap-2">
           <button onClick={onCancel} className="flex-1 py-3 border border-stone-300 text-xs uppercase tracking-wider text-stone-700 hover:bg-stone-50">Cancelar</button>
           <button onClick={handleSubmit} className="flex-1 py-3 bg-stone-900 text-stone-50 text-xs uppercase tracking-[0.2em] hover:bg-stone-800">Guardar receta</button>
@@ -2648,9 +3356,9 @@ function FormularioReceta({ ingredientes, onSave, onCancel }) {
     </div>
   );
 }
-
+ 
 // Sub-componentes de los formularios
-
+ 
 function Field({ label, required, children }) {
   return (
     <div>
@@ -2661,11 +3369,11 @@ function Field({ label, required, children }) {
     </div>
   );
 }
-
+ 
 function CapaSelector({ label, color, capa, ingredientes, agregarIngrediente, actualizarCantidad, removerIngrediente, setCapa }) {
   const colorClass = { stone: 'text-stone-500', amber: 'text-amber-700', emerald: 'text-emerald-700' }[color];
   const ingredientesDisponibles = ingredientes.filter(i => !capa.find(c => c.id === i.id));
-
+ 
   return (
     <div>
       <p className={`text-[10px] uppercase tracking-[0.2em] ${colorClass} mb-3 font-medium`}>{label}</p>
@@ -2692,3 +3400,4 @@ function CapaSelector({ label, color, capa, ingredientes, agregarIngrediente, ac
     </div>
   );
 }
+ 
